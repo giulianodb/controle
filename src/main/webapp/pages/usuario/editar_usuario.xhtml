@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+		
+		<h:form>
+				
+				<h:inputHidden value="#{usuarioControl.usuario.idUsuario}" rendered="#{usuarioControl.operacao == 'Alterar'}"/>
+				
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Cadastrar Usuario"  />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Informações Usuario" switchType="client">
+					<h:panelGrid columns="3">
+
+						<h:outputText value="*Nome Completo:" styleClass="form_label" />
+						<h:inputText value="#{usuarioControl.usuario.nome}" id="nomeCompleto" required="true" label="Nome Completo" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="nomeCompleto" />
+					
+						<h:outputText value="*Email:" styleClass="form_label" />
+						<h:inputText value="#{usuarioControl.usuario.email}" id="email" label="Nome Completo" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="email" />
+					
+								
+						<h:outputText value="Cargo:" styleClass="form_label" />
+						<h:selectOneMenu id="selPapel"  value="#{usuarioControl.usuario.papel.idPapel}" >
+							<f:selectItems value="#{usuarioControl.listPapel}" var="p" itemValue="#{p.idPapel}" itemLabel="#{p.descricaoPapel}" />
+						</h:selectOneMenu>
+						
+						<rich:message for="selPapel" />
+						
+						
+						<h:outputText value="*Participação em extras (%):" styleClass="form_label" />
+						<h:inputText value="#{usuarioControl.usuario.participacao}" id="participacao" required="false" label="Participação" maxlength="5" size="5" style="font-size: 14px; font-family: Courier new">
+							<f:converter converterId="converter.MoedaConverter"/>
+						</h:inputText>
+						
+						<rich:message for="participacao" />
+						
+						
+						<h:outputText value="Situação:" styleClass="form_label" />
+						<h:selectOneMenu id="selSituacao"  value="#{usuarioControl.usuario.statusUsuario}" >
+								<f:selectItems value="#{usuarioControl.listaStatusUsuario}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p.descricao}" ></f:selectItems>
+						</h:selectOneMenu>
+						
+						<rich:message for="selPapel" />
+						
+					
+							
+						<h:outputText value="*Login:" styleClass="form_label" />
+						<h:inputText value="#{usuarioControl.usuario.loginUsuario}" id="login" required="true" label="Login: " maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="login" />
+					
+						
+						<h:outputText value="*Senha:" styleClass="form_label" />
+						<h:inputText value="#{usuarioControl.usuario.senha}" id="senha" required="true" label="Nome Completo" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="senha" />
+				
+						
+						
+					</h:panelGrid>
+					
+				</rich:collapsiblePanel>
+				<br />
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+					<h:commandButton action="#{usuarioControl.incluirUsuario()}" value="Salvar usuario" rendered="#{usuarioControl.operacao == 'Incluir'}" />
+					<h:commandButton action="#{usuarioControl.alterarUsuario()}" value="Alterar usuario" rendered="#{usuarioControl.operacao == 'Alterar'}" />
+					<h:commandButton action="#{usuarioControl.excluirUsuario()}" value="Excluir usuario" rendered="#{usuarioControl.operacao == 'Excluir'}" immediate="true"/>
+					<h:commandButton action="#{usuarioControl.iniciarListarUsuario()}" value="Voltar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

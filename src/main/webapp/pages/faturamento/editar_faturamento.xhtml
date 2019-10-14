@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+		
+		<h:form>
+				
+				<h:inputHidden value="#{faturamentoControl.faturamento.idFaturamento}" rendered="#{faturamentoControl.operacao == 'Alterar'}"/>
+						<h:inputHidden value="#{faturamentoControl.faturamento.cliente.idCliente}"/>
+				
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Cadastrar Faturamento"  />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Informações Faturamento" switchType="client">
+					<h:panelGrid columns="3">
+
+						<h:outputText value="*Cliente:" styleClass="form_label" />
+						<h:inputText value="#{faturamentoControl.faturamento.cliente.nome}" id="cliente" required="true" label="Cliente" maxlength="100"/>
+								
+						<rich:message for="cliente" />
+									
+						<h:outputText value="*Data: " styleClass="form_label" />
+						<rich:calendar id="data" required="true" value="#{faturamentoControl.faturamento.data}"
+							datePattern="dd/MM/yyyy" popup="true" />
+						<rich:message for="data" />
+					
+						
+						<h:outputText value="*Tempo:" styleClass="form_label" />
+						<h:inputText value="#{faturamentoControl.faturamento.tempo}" id="tempo" required="true" label="Tempo" maxlength="100"/>
+						<rich:message for="tempo" />
+						
+						<h:outputText value="*Valor Hora:" styleClass="form_label" />
+						<h:inputText value="#{faturamentoControl.faturamento.valorHora}" id="valorHora" required="true" label="Valor Hora" maxlength="100">
+							       
+            					<a4j:ajax event="keyup" render="out" />
+
+						</h:inputText>
+						<rich:message for="valorHora" />
+						
+						<h:outputText value="Cobravél" styleClass="form_label" />
+						<h:selectBooleanCheckbox value="#{faturamentoControl.faturamento.cobravel}" id="cobravel" required="true" label="Cobravel" maxlength="100"/>
+						<rich:message for="cobravel" />
+						
+						
+						
+						<h:outputText value="Tipo caso:" styleClass="form_label" />
+						
+						<h:selectOneMenu value="#{faturamentoControl.faturamento.tipoCaso.idTipoCaso}">
+						 	<f:selectItems value="#{faturamentoControl.listaTipoCaso}" var="p" itemValue="#{p.idTipoCaso}" itemLabel="#{p.descricao}" />
+						</h:selectOneMenu>
+										 
+						<rich:message for="tipoCaso" />
+						
+							
+						<h:outputText value="*Descrição" styleClass="form_label" />
+						<h:inputTextarea value="#{faturamentoControl.faturamento.descricao}" id="descricao" required="true" label="Descrição" maxlength="100" cols="50" rows="5"/>
+						<rich:message for="descricao" />
+						
+						<h:outputText value="Advogado" styleClass="form_label" />
+						<h:inputText value="#{usuarioLogadoControl.usuario.nome}" id="advogado" label="Advogado" maxlength="100" readonly="true"/>
+						<rich:message for="advogado" />
+						
+						<h:outputLabel value="Valor total:" />
+						<h:outputLabel value="#{faturamentoControl.faturamento.getValorTotal()}" id="out"/>
+						
+					</h:panelGrid>
+					
+				</rich:collapsiblePanel>
+				<br />
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+					<h:commandButton action="#{faturamentoControl.cadastrarFaturamento()}" value="Salvar faturamento" rendered="#{faturamentoControl.operacao == 'Incluir'}" />
+					<h:commandButton action="#{faturamentoControl.alterarFaturamento()}" value="Alterar faturamento" rendered="#{faturamentoControl.operacao == 'Alterar'}" />
+					<h:commandButton action="#{faturamentoControl.excluirFaturamento()}" value="Excluir faturamento" rendered="#{faturamentoControl.operacao == 'Excluir'}" />
+					<h:commandButton action="/pages/inicial.xhtml" value="Voltar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

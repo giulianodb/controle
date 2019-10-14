@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+		
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Detalhes participação advogado" />
+					</h:panelGrid>
+									
+					<br />
+
+					<rich:collapsiblePanel header="Pesquisa" switchType="client" >
+							<h:form>
+						<table class="form_tabela">
+							<tr>
+								<td class="form_label"><h:outputText value="Advogado:"  /> </td>
+								<td>
+									<h:selectOneMenu value="#{participacaoControl.idAdvogadoPesquisa}">
+							 	
+										<f:selectItems value="#{participacaoControl.listaAdvogadosCombo}"
+										 	var="p" 
+										 	itemValue="#{p.idUsuario}" 
+										 	itemLabel="#{p.nome}"
+										 	
+										 	
+										 	></f:selectItems>
+									</h:selectOneMenu>	
+								
+								</td>
+							</tr>
+							<tr>
+								<td class="form_label">Nome cliente:</td>
+								<td>
+									    <h:selectOneMenu  value="#{participacaoControl.idClientePesquisa}">
+								 			<f:selectItem itemLabel="Selecione" />
+											<f:selectItems value="#{participacaoControl.listaClienteCombo}"
+											 	var="cliente" 
+											 	itemValue="#{cliente.idCliente}" 
+											 	itemLabel="#{cliente.nome}"											 	
+											 												 	
+											 	></f:selectItems>
+																					 		
+									</h:selectOneMenu>	
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+								<td class="form_label">Data início:</td>
+								<td>
+										<rich:calendar id="dataInicio"  datePattern="dd/MM/yyyy" popup="true" value="#{participacaoControl.dataInicioPesquisa}"/>
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Data fim:</td>
+								<td>
+										<rich:calendar id="dataFim" datePattern="dd/MM/yyyy" popup="true"  value="#{participacaoControl.dataFimPesquisa}" />
+								
+								</td>
+							</tr>
+				
+						</table>
+						<hr />
+						<h:panelGrid columns="2" cellpadding="3" styleClass="botoes">
+							<h:commandButton action="#{participacaoControl.pesquisarDetalhesParticipacaoPorAdvogado()}" value="Pesquisar" styleClass="btn_principal" immediate="false"/>
+					
+						</h:panelGrid>
+						</h:form>
+					</rich:collapsiblePanel>
+					
+				</h:panelGrid>
+				
+				<br />
+				
+			
+				<h:form>
+					<h:panelGrid columns="2" cellpadding="3">
+							<h:outputText value="Valor total: R$ #{participacaoControl.valorTransferenciaAdvogado}" styleClass="form_label" id="valorTransferencia">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>	
+						<h:commandButton action="#{participacaoControl.pagarParticipacao()}" value="Pagar valores" styleClass="btn_principal" rendered="#{participacaoControl.listaDetalhesParticipacaoAdvogadoDTO.size() > 0}"/>
+					</h:panelGrid>
+					<rich:dataTable id="resumos" 
+						cellpadding="0"
+						width="50%" 
+						cellspacing="0" 
+						border="0" 
+						var="dto"
+						value="#{participacaoControl.listaDetalhesParticipacaoAdvogadoDTO}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						>
+						
+						<rich:column style="width: 1%; text-align: center;">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{participacaoControl.statusCheckBox}">
+									<a4j:ajax event="click" listener="#{participacaoControl.selecionarParticipacaoPagamento(event)}" render="resumos,valorTransferencia,valorTransferenciaDown" ></a4j:ajax>
+									<!--  <a4j:ajax event="change" render="valorTransferencia,valorTransferenciaDown" execute="@form" />-->
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							 <h:selectBooleanCheckbox value="#{dto.dtoSelecionada}" >
+							 		<a4j:ajax event="change" render="valorTransferencia,valorTransferenciaDown" execute="@form"/>
+							 </h:selectBooleanCheckbox>
+						</rich:column>
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Cliente" />
+							</f:facet>
+							<h:outputText value="#{dto.nomeCliente}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Advogado" />
+							</f:facet>
+							<h:outputText value="#{dto.nomeAdvogado}"></h:outputText>
+						</rich:column>
+					
+												
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Valor Disponível" />
+							</f:facet>
+							<h:outputText value="#{dto.valorDisponivel}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Valor Pendente" />
+							</f:facet>
+							<h:outputText value="#{dto.valorPendente}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						
+					</rich:dataTable>
+					
+					<h:panelGrid columns="2" cellpadding="3">
+						<h:outputText value="Valor total: R$ #{participacaoControl.valorTransferenciaAdvogado}" styleClass="form_label" id="valorTransferenciaDown">
+								<f:converter converterId="converter.MoedaConverter"/>
+						</h:outputText>	
+						<h:commandButton action="#{participacaoControl.pagarParticipacao()}" value="Pagar valores" styleClass="btn_principal" rendered="#{participacaoControl.listaDetalhesParticipacaoAdvogadoDTO.size() > 0}"/>
+					</h:panelGrid>
+				</h:form>
+			
+				<rich:jQuery  selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"  query="jQuery(this).removeClass('active-row')" />
+
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+
+	</ui:composition>
+
+</ui:component>

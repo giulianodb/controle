@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:component
+ 	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	
+	<h:form id="menuForm">
+		<rich:panel header="Projeto">
+			<h:selectOneMenu id="selProjetos" value="#{menuControl.idProjetoSelecionado}" onchange="submit()" valueChangeListener="#{menuControl.selecionarProjeto}">
+				<f:selectItems value="#{menuControl.projetos}" var="p" itemValue="#{p.id}" itemLabel="#{p.nome}" />
+			</h:selectOneMenu>
+		</rich:panel>
+		
+		<rich:panelMenu id="menu" styleClass="menu_vertical"
+				groupExpandedLeftIcon="triangleUp" groupCollapsedLeftIcon="triangleDown"
+				topGroupExpandedLeftIcon="chevronUp" topGroupCollapsedLeftIcon="chevronDown"
+				itemLeftIcon="disc" activeItem="#{menuControl.itemMenuSelecionado}" itemChangeListener="#{menuControl.selecionar}"
+				groupMode="ajax" itemMode="server">
+			<rich:panelMenuItem id="meusProjetos" label="Meus Projetos" action="#{manterProjetosControl.iniciar}" />
+			<rich:panelMenuGroup label="Planejamento" rendered="#{menuControl.exibirPlanejamento}">
+				<rich:panelMenuItem id="planejar_fases" label="Fases" action="#{planejarFasesControl.iniciar}"  />
+				<rich:panelMenuItem id="planejar_iteracao" label="Próx. Iteração" action="#{planejarIteracaoControl.iniciar}" />
+			</rich:panelMenuGroup>
+			<rich:panelMenuGroup label="Acompanhamento">
+				<rich:panelMenuItem id="acompanhar_projeto" label="Acompanhar Projeto" action="#{acompanharProjetoControl.iniciar}" />
+			</rich:panelMenuGroup>
+			<rich:panelMenuGroup label="Execuções">
+				<rich:panelMenuItem id="registrar_execucao" label="Registro" action="#{registrarExecucaoControl.iniciar}" />
+			</rich:panelMenuGroup>
+			<rich:panelMenuGroup label="Requisitos">
+				<rich:panelMenuItem id="listar_requisitos" label="Lista" action="#{manterRequisitosControl.iniciar}" />
+				<rich:panelMenuItem id="novo_requisito" label="Novo" action="#{manterRequisitosControl.novo}" />
+			</rich:panelMenuGroup>
+			<rich:panelMenuGroup label="Riscos">
+				<rich:panelMenuItem label="Novo" />
+			</rich:panelMenuGroup>
+		</rich:panelMenu>
+	</h:form>
+</ui:component>

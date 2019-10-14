@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Faturamentos"  />
+				</h:panelGrid>	
+				
+			
+			<br>
+			</br>
+			<h:outputText value="Não foram encontrados registros." rendered="#{!faturaFixoControl.mostrarListaFaturamentoFixo()}"  />
+								
+					
+					
+				<h:form id="interno">
+				
+					<rich:collapsiblePanel header="Informações" switchType="client" id="cinterno" >
+					
+						<table class="form_tabela" id="tabela">
+							<tr>
+								<td class="form_label">Nome cliente:</td>
+								<td><h:outputText id="nomeCliente" name="Nome do cliente" value="#{faturaFixoControl.prolaborePreParticipacao.caso.cliente.nome}" size="50" style="font-size: 14px; font-family: Courier new"/></td>
+							</tr>
+							<tr>
+								<td class="form_label">Nome Caso:</td>
+								<td>
+									<h:outputText id="nomeCaso" name="Nome do cliente" value="#{faturaFixoControl.prolaborePreParticipacao.caso.nomeCaso}" size="50" style="font-size: 14px; font-family: Courier new"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="form_label">Saldo:</td>
+								<td>
+									<h:outputText id="saldo" name="Nome do cliente" value="#{faturaFixoControl.saldoParticipacao}" size="50" style="font-size: 14px; font-family: Courier new">
+											<f:converter converterId="converter.MoedaConverter"/>
+									</h:outputText>
+								</td>
+							</tr>
+							<tr>
+								<td class="form_label">Valor participação:</td>
+								<td>
+									<h:outputText id="participacao" name="Nome do cliente" value="#{faturaFixoControl.valorParticipacaoTrabalho}" size="50" style="font-size: 14px; font-family: Courier new">
+											<f:converter converterId="converter.MoedaConverter"/>
+									</h:outputText>
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Status:</td>
+								<td>
+									<h:selectOneMenu value="#{faturaFixoControl.prolaborePreParticipacao.valorParticipacaoEnum}" immediate="true">
+										<f:selectItems value="#{faturaFixoControl.listValorParticipacaoEnum}"
+										 	var="v" 
+										 	itemValue="#{v}" 
+										 	itemLabel="#{v.descricao}" />
+											<a4j:ajax  event="valueChange" execute="@this" listener="#{faturaFixoControl.atualizarSaldoPrePart()}"  render="interno"/>
+											
+											
+									</h:selectOneMenu>
+								
+								</td>
+							</tr>
+								
+							
+						
+						</table>
+						<hr />
+					
+
+					</rich:collapsiblePanel>
+					
+					
+					<rich:dataTable var="pre" 
+						id="dataTable"
+						value="#{faturaFixoControl.prolaborePreParticipacao.listaPreParticipacaoFixos.toArray()}"
+						rowClasses="odd-row, even-row" 
+						
+						styleClass="stable"  style="height:300px; width:500px;"
+						>
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>Nome</rich:column>
+								<rich:column>valor</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+						
+						<rich:column>#{pre.advogado.nome}</rich:column>
+						<rich:column>
+							<h:inputText value="#{pre.valorParticipacao}" >
+							<a4j:ajax event="click" execute="@this"/>
+								<a4j:ajax event="blur" listener="#{faturaFixoControl.atualizarSaldoPrePart()}" execute="@this" render="cinterno" ></a4j:ajax>
+									<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>
+						</rich:column>
+						
+					
+					</rich:dataTable>
+					<h:panelGrid styleClass="botoes" columns="2">
+						
+						<h:commandButton action="#{faturaFixoControl.salvarPreParticipacaoRetorno()}" value="Salvar" styleClass="btn_principal" immediate="true"/>
+					
+					</h:panelGrid>
+					
+					</h:form>
+					
+
+				<rich:jQuery  selector=".stable tr" event="mouseover"
+					query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"
+					query="jQuery(this).removeClass('active-row')" />
+
+			<!--		</h:panelGrid>		-->
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+	</ui:composition>
+
+</ui:component>

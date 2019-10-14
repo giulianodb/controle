@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>controle</display-name>
+	<context-param>
+		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Production</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.richfaces.skin</param-name>
+		<param-value>DEFAULT</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/pages/error.xhtml</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/pages/erro404.jsf</location>
+	</error-page>
+	
+	<security-constraint>
+		<display-name>Caso</display-name>
+		<web-resource-collection>
+			<web-resource-name>Sistema</web-resource-name>
+			<url-pattern>/pages/caso/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Advogado_Senior</role-name>
+			<role-name>Advogado_Pleno</role-name>
+			<role-name>Advogado_Junior</role-name>
+			<role-name>Estagiario</role-name>
+			<role-name>Administrador</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<display-name>Trabalho</display-name>
+		<web-resource-collection>
+			<web-resource-name>Trabalho</web-resource-name>
+			<url-pattern>/pages/trabalho/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Advogado_Senior</role-name>
+			<role-name>Advogado_Pleno</role-name>
+			<role-name>Advogado_Junior</role-name>
+			<role-name>Estagiario</role-name>
+			<role-name>Administrador</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<display-name>Cliente</display-name>
+		<web-resource-collection>
+			<web-resource-name>Sistema</web-resource-name>
+			<url-pattern>/pages/cliente/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Advogado_Senior</role-name>
+			<role-name>Advogado_Pleno</role-name>
+			<role-name>Advogado_Junior</role-name>
+			<role-name>Estagiario</role-name>
+			<role-name>Administrador</role-name>
+			<role-name>Financeiro</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+
+	<security-constraint>
+		<display-name>Faturamento</display-name>
+		<web-resource-collection>
+			<web-resource-name>Faturamento</web-resource-name>
+			<url-pattern>/pages/faturamento/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Administrador</role-name>
+			<role-name>Financeiro</role-name>
+		</auth-constraint>
+
+	</security-constraint>
+	
+	<security-constraint>
+		<display-name>Faturamento</display-name>
+		<web-resource-collection>
+			<web-resource-name>Faturamento</web-resource-name>
+			<url-pattern>/pages/relatorio/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Administrador</role-name>
+			<role-name>Financeiro</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<display-name>Honorario</display-name>
+		<web-resource-collection>
+			<web-resource-name>Honoraro</web-resource-name>
+			<url-pattern>/pages/honorarios/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Administrador</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<display-name>Contas</display-name>
+		<web-resource-collection>
+			<web-resource-name>Contas</web-resource-name>
+			<url-pattern>/pages/conta/*</url-pattern>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Transacao</web-resource-name>
+			<url-pattern>/pages/transacao/*</url-pattern>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Participacao</web-resource-name>
+			<url-pattern>/pages/participacao/*</url-pattern>
+		</web-resource-collection>
+		
+		<auth-constraint>
+			<role-name>Administrador</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	
+	
+	<security-constraint>
+		<display-name>Sistema</display-name>
+		<web-resource-collection>
+			<web-resource-name>Sistema</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Advogado_Senior</role-name>
+			<role-name>Advogado_Pleno</role-name>
+			<role-name>Advogado_Junior</role-name>
+			<role-name>Estagiario</role-name>
+			<role-name>Administrador</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsf</form-login-page>
+			<form-error-page>/login_error.jsf</form-error-page>
+		</form-login-config>
+	</login-config>
+	<security-role>
+		<description>Quando usuario estiver logado</description>
+		<role-name>Advogado_Senior</role-name>
+	</security-role>
+	<security-role>
+		<description>Quando usuario estiver logado</description>
+		<role-name>Advogado_Pleno</role-name>
+	</security-role>
+	<security-role>
+		<description>Quando usuario estiver logado</description>
+		<role-name>Advogado_Junior</role-name>
+	</security-role>
+	<security-role>
+		<description>Quando usuario estiver logado</description>
+		<role-name>Estagiario</role-name>
+	</security-role>
+	<security-role>
+		<description>Quando usuario estiver logado</description>
+		<role-name>Administrador</role-name>
+	</security-role>
+	<security-role>
+		<description>Quando usuario estiver logado</description>
+		<role-name>Financeiro</role-name>
+	</security-role>
+	
+	<session-config>
+   		<session-timeout>600</session-timeout>
+	</session-config>
+</web-app>

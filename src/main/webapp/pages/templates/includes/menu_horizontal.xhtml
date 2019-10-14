@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<rich:panel id="menu_horizontal" styleClass="rf-tb">
+		<h:form>
+			<rich:toolbar itemSeparator="line">
+				<rich:toolbarGroup>
+				</rich:toolbarGroup>
+				<!-- Menu do admin -->
+				<rich:toolbarGroup rendered="#{rich:isUserInRole('Administrador')}" >
+					<h:commandLink action="#{usuarioControl.iniciarListarUsuario()}" value="Usuários" styleClass="link-menu" />
+				</rich:toolbarGroup>
+				<rich:toolbarGroup rendered="#{rich:isUserInRole('Administrador, Financeiro, Advogado_Junior, Advogado_Pleno, Advogado_Senior,Estagiario')}">
+					<h:commandLink action="#{clienteControl.listarCliente()}" value="Cliente" styleClass="link-menu" />
+				</rich:toolbarGroup>
+				<rich:toolbarGroup rendered="#{rich:isUserInRole('Administrador, Financeiro, Advogado_Junior, Advogado_Pleno, Advogado_Senior,Estagiario')}">
+					<h:commandLink action="#{casoControl.listarCaso()}" value="Caso" styleClass="link-menu" />
+				</rich:toolbarGroup>
+				
+				<rich:toolbarGroup rendered="#{rich:isUserInRole('Administrador, Financeiro, Advogado_Junior, Advogado_Pleno, Advogado_Senior,Estagiario')}">
+					<h:commandLink action="#{trabalhoControl.listarTrabalho()}" value="Trabalho" styleClass="link-menu" />
+				</rich:toolbarGroup>
+				
+				<rich:dropDownMenu label="Faturas" rendered="#{rich:isUserInRole('Administrador, Financeiro')}" > 
+					<rich:menuItem  label="Pesquisar Faturas" action="#{faturaControl.listarFaturas()}"/>
+					<rich:menuItem  label="Emitir faturas" action="#{faturaControl.listarClientesFaturar()}"/>
+					<rich:menuItem  label="Emitir faturas fixas" action="#{faturaFixoControl.pesquisarEmissaoFaturaFixo()}"/>
+				</rich:dropDownMenu>
+						
+				<rich:dropDownMenu label="Participações" rendered="false" > 
+					<rich:menuItem  label="Visão geral" action="#{participacaoControl.pesquisarUsuarioParticipacao()}"/>
+					<rich:menuItem  label="Detalhes" action="#{participacaoControl.iniciarPesquisaDetalhesParticipacao()}"/>
+				</rich:dropDownMenu>				
+				
+				<rich:dropDownMenu label="Movimentações" rendered="false" > 
+					<rich:menuItem  label="Resumo" action="#{contaControl.visualizarResumoFinanceiro()}"/>
+					<rich:menuItem  label="Movimentações manuais" action="#{transacaoControl.iniciarSalvarTransacaoManual()}"/>
+					<rich:menuItem  label="Movimentações" action="#{transacaoControl.listarTransacao()}"/>
+				</rich:dropDownMenu>
+				
+				<rich:dropDownMenu label="Utilitários" rendered="#{rich:isUserInRole('Administrador')}" > 
+					<rich:menuItem  label="Honorários" action="#{valorHonorarioControl.listarValorHonorario()}"/>
+					<rich:menuItem  label="Porcentagens distribuição" action="#{participacaoDefaultControl.listarParticipacaoDefault()}"/>
+				</rich:dropDownMenu>
+				
+				<rich:toolbarGroup location="right">
+					<h:commandLink action="#{usuarioLogadoControl.alterarSenha()}" styleClass="link-menu">
+						<h:outputText value="Alterar Senha" />
+					</h:commandLink>
+				</rich:toolbarGroup>
+				
+				<rich:toolbarGroup location="right">
+					<h:commandLink action="#{usuarioLogadoControl.sair()}" styleClass="link-menu">
+						<h:graphicImage library="images" name="door_out.png" title="Remover Fase" />
+						<h:outputText value=" Sair" />
+					</h:commandLink>
+				</rich:toolbarGroup>
+							
+				<rich:toolbarGroup  location="right" rendered="false" >
+					<h:commandLink action="#{sociosAplication.popularBase()}" value="Popular Base" styleClass="link-menu" />
+				</rich:toolbarGroup>	
+			</rich:toolbar>
+			
+			
+		</h:form>
+	</rich:panel>
+</ui:component>

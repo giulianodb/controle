@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<title>Controle</title>
+		
+	<!-- CSS Framework -->
+	<h:outputStylesheet library="css" name="richfaces-custom.css" />
+	<!-- <h:outputStylesheet name="richf/mensagens.css"	library="styles" /> -->
+
+	<!-- JS Framework -->
+	<h:outputScript library="javascript" name="cookie.js" />
+	<h:outputScript library="javascript" name="drag.js" />
+	<h:outputScript library="javascript" name="jquery-1.9.0.js" />
+	<h:outputScript library="javascript" name="jquery.maskedinput.min.js"/>
+	
+
+    <script type="text/javascript">
+
+
+    jQuery(function($){
+    	$.mask.definitions['~']='[+-]';
+    	$("[id='formCli:telefone']").mask("(99) 9999-9999");
+    	$("[id='formCli:celular']").mask("(99) 9999-9999?9");
+    	$("[id='formCli:cpf']").mask("999.999.999-99");
+    	$("[id='formCli:cnpj']").mask("99.999.999/9999-99");
+    	$("[id='formCli:telefoneContato']").mask("(99) 9999-9999");
+    	
+    	});
+
+  
+    </script>
+   
+   
+	<!-- CSS Aplicação -->
+	<h:outputStylesheet library="css" name="principal.css" />
+
+	<!-- JS Aplicação -->
+		
+</h:head>
+
+<h:body>
+	<f:view>
+		<div id="topo" class="topo_flutuante">
+			<ui:include src="/pages/templates/includes/titulo.xhtml" />
+			<ui:include src="/pages/templates/includes/menu_horizontal.xhtml" />
+			
+		</div>
+		
+		<div id="body" class="corpo_principal">
+			<h:panelGrid columns="2" columnClasses="vmenu, corpo" width="100%">
+				<rich:panel>
+					<ui:insert name="message">
+						<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+						</rich:messages>
+					</ui:insert>
+					<ui:insert name="body"/>
+				</rich:panel>
+			</h:panelGrid>
+		</div>
+	</f:view>
+	
+</h:body>
+</html>

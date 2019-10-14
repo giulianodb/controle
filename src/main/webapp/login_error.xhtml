@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:x_rt="http://java.sun.com/jstl/xml_rt">
+
+		<head>
+				<style type="text/css">
+	#body_login {
+	
+	background-repeat: repeat-x;
+	
+}
+.login_corpo {
+	height:100px;
+	margin-left: 200px;
+	display: block;
+	position:absolute;
+	top: 180px;
+}
+
+.login_ship {
+        height:380px;
+	margin-left:0px;
+
+	background-repeat: no-repeat;
+	display: block;
+	position:relative;
+	top:0px;
+	
+}
+
+.teste{
+width:0px;
+}
+#titulo{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size:60px;
+	font-weight:bold;	
+	color: #1b6990;
+	position:absolute;
+	top:70px;
+	left:43%;
+	margin-left:-90px;
+}
+
+.login_logo_sistema {
+	position:absolute;
+	left:50%;
+	margin-left: -245px;
+	top: 103px;
+}
+.login_logo_cliente {
+	position:absolute;
+	left:50%;
+	margin-left: 180px;
+	top: 71px;
+}
+.login_back {
+	z-index:1000;
+	
+	position:absolute;
+	width:790px;
+	height:278px;
+	background-repeat:no-repeat;
+	top:64px;
+	left:40%;
+	margin-left:-214px;
+}
+
+#cabecalho table {
+	width:100%;
+	
+	background-repeat:repeat-x;
+	background-position:bottom;
+}
+#cabecalho td {
+	padding:0px;
+}
+
+	.teste {
+background:#333;
+border:1px solid #888;
+width:450px;
+margin:10px auto;
+padding:0px auto;
+text-align:center;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+border-radius:7px;
+}
+	
+	
+	</style>
+		
+		</head>				
+				
+		
+<body id="body_login">
+<div id="titulo">Controle</div>
+<div class="login_ship"></div>
+<div class="login_logosistema">
+</div>
+<div class="login_corpo" align="rigth">
+
+
+<form action="j_security_check" method="post">
+
+
+
+
+
+<center><label style="color: Red;" > <b>Usuário ou senha incorreto.</b></label></center>
+<div class="teste" style="display:block; background:#f3f3f3; border:1px solid #888; width:480px; height:120px; padding:20px auto; margin:10px auto; text-align:center; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; color:#fff; line-height:16px;">
+<br></br>
+
+<table  align="left" width="200px" id="teste">
+	<tr align="left">
+			<td class="login_label" align="left" style="color: #1B6990;font-family: Verdana; font-weight: bold; font-size: 18px;border-radius:4px;">Usuário</td><td><input type="text" name="j_username" style="border-radius:4px;"/></td>
+		</tr>
+		<tr><td></td><td></td></tr>
+		<tr align="left">
+			<td class="login_label" align="left" style="color: #1B6990;font-family: Verdana; font-weight: bold; font-size: 18px;">Senha</td><td><input type="password" name="j_password" style="border-radius:4px;"/></td>
+		</tr>
+	<tr> <td><input type="submit" value="Login" style="border-radius: 5px;"/>  </td></tr>
+</table>
+
+
+</div>
+
+</form>
+
+
+
+
+
+
+</div>
+
+
+
+</body></html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+		
+		<h:form id="formCli">
+				
+				<h:inputHidden value="#{clienteControl.cliente.idCliente}" rendered="#{clienteControl.operacao == 'Alterar'}"/>
+				
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Cadastrar Cliente"  />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Informações Cliente" switchType="client">
+					<h:panelGrid columns="3">
+
+						<h:outputText value="*Nome fantasia:" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.nome}" id="nomeFantasia" required="true" label="Nome fantasia" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="nomeFantasia" />
+							
+									
+						<h:outputText value="Email:" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.email}" id="email" label="Nome Completo" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="email" />	
+							
+						<h:outputText value="CNPJ:" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.cnpj}" id="cnpj" label="CNPJ" maxlength="100" size="19" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="cnpj" />
+														
+						<h:outputText value="Telefone:" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.telefone}" id="telefone" label="Celular" maxlength="100" size="15" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="telefone" />
+						
+						<h:outputText value="Nome contato (1):" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.nomeContato}" id="nomeContato"  label="Nome contato" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="nomeContato" />
+						
+						<h:outputText value="Telefone contato (1):" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.telefoneContato}" id="telefoneContato" label="Telefone Contato" maxlength="100" size="15" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="telefoneContato" />
+						
+						<h:outputText value="Nome contato (2):" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.nomeContatoSecundario}" id="nomeContato2"  label="Nome contato" maxlength="100" size="50" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="nomeContato2" />
+						
+						<h:outputText value="Telefone contato (2):" styleClass="form_label" />
+						<h:inputText value="#{clienteControl.cliente.telefoneContatoSecundario}" id="telefoneContato2" label="Telefone Contato" maxlength="100" size="15" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="telefoneContato2" />
+						
+						
+						<h:outputText value="Valor hora estagiário:" styleClass="form_label"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						<h:inputText value="#{clienteControl.cliente.valorHoraEstagiario}" id="valorHoraEstagiario" label="Valor hora estagiário" maxlength="100" size="10" style="font-size: 14px; font-family: Courier new"  rendered="#{rich:isUserInRole('Administrador')}">
+							<f:converter converterId="converter.MoedaConverter"/>
+						</h:inputText>
+						
+						<rich:message for="valorHoraEstagiario"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						
+						<h:outputText value="Valor hora junior:" styleClass="form_label"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						<h:inputText value="#{clienteControl.cliente.valorHoraJunior}" id="valorHoraJunior" label="Telefone Contato" maxlength="100" size="10" style="font-size: 14px; font-family: Courier new"  rendered="#{rich:isUserInRole('Administrador')}">
+							<f:converter converterId="converter.MoedaConverter"/>
+						</h:inputText>
+						<rich:message for="valorHoraJunior"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						
+						
+						<h:outputText value="Valor hora pleno:" styleClass="form_label"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						<h:inputText value="#{clienteControl.cliente.valorHoraPleno}" id="valorHoraPleno"  label="Telefone Contato" maxlength="100" size="10" style="font-size: 14px; font-family: Courier new"  rendered="#{rich:isUserInRole('Administrador')}">
+							<f:converter converterId="converter.MoedaConverter"/>
+						</h:inputText>
+						<rich:message for="valorHoraPleno"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						
+						<h:outputText value="Valor hora sênior:" styleClass="form_label" rendered="#{rich:isUserInRole('Administrador')}" />
+						<h:inputText value="#{clienteControl.cliente.valorHoraSenior}" id="valorHoraSenior" label="Telefone Contato" maxlength="100" size="10" style="font-size: 14px; font-family: Courier new"  rendered="#{rich:isUserInRole('Administrador')}">
+							<f:converter converterId="converter.MoedaConverter"/>
+						</h:inputText>
+						<rich:message for="valorHoraSenior"  rendered="#{rich:isUserInRole('Administrador')}"/>
+						
+						
+					</h:panelGrid>
+					
+				</rich:collapsiblePanel>
+				<br />
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+					<h:commandButton action="#{clienteControl.cadastrarCliente()}" value="Salvar cliente" rendered="#{clienteControl.operacao == 'Incluir'}" />
+					<h:commandButton action="#{clienteControl.alterarCliente()}" value="Alterar cliente" rendered="#{clienteControl.operacao == 'Alterar'}" />
+					<h:commandButton action="#{clienteControl.excluirCliente()}" value="Excluir cliente" rendered="#{clienteControl.operacao == 'Excluir'}" />
+					<h:commandButton action="#{clienteControl.listarCliente()}" value="Voltar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

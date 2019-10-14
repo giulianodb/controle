@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+
+
+				<h:inputHidden value="#{usuarioControl.usuario.idUsuario}"
+					rendered="#{usuarioControl.operacao == 'Alterar'}" />
+
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Cadastrar Usuario" />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Alterar senha"
+					switchType="client">
+
+
+							<rich:graphValidator value="#{usuarioControl}" id="gv">
+					<h:panelGrid columns="3">
+						<h:form>
+								
+										<h:outputText value="Entre com a nova senha:" />
+										<h:inputSecret value="#{usuarioLogadoControl.senhaNova}" style="font-size: 14px; font-family: Courier new" id="pass" />
+										<rich:message for="pass" />
+										<h:outputText value="Confirme a senha:" />
+										<h:inputSecret value="#{usuarioLogadoControl.confirmaSenha}" style="font-size: 14px; font-family: Courier new" id="conf" />
+										<rich:message for="conf" />
+									<a4j:commandButton value="Alterar senha"
+										action="#{usuarioLogadoControl.storeNewPassword()}" />
+			</h:form>
+					</h:panelGrid>
+							</rich:graphValidator>
+
+					
+
+
+				</rich:collapsiblePanel>
+				<br />
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

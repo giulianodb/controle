@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				<h:form>
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Resumo financeiro" />
+					</h:panelGrid>
+				
+					
+					<br />
+
+					<rich:collapsiblePanel header="Informações" switchType="client">
+							<h:panelGrid columns="2">
+							
+								<h:outputText value="Saldo em conta:" styleClass="form_label" />
+								<h:outputText value="R$ #{contaControl.resumoFinanceiroDTO.saldoEmConta}">
+									<f:converter converterId="converter.MoedaConverter"/>
+								</h:outputText>
+								
+								<h:outputText value="Saldo reservado para Advogados:" styleClass="form_label" />
+								<h:outputText value="R$ #{contaControl.resumoFinanceiroDTO.saldoReservadoAdvogado}">
+									<f:converter converterId="converter.MoedaConverter"/>
+								</h:outputText>
+								
+								<h:outputText value="Saldo reservado para Impostos:" styleClass="form_label" />
+								<h:outputText value="R$ #{contaControl.resumoFinanceiroDTO.saldoReservadoImposto}">
+									<f:converter converterId="converter.MoedaConverter"/>
+								</h:outputText>
+								
+								<h:outputText value="Saldo com descontos:" styleClass="form_label" />
+								<h:outputText value="R$ #{contaControl.resumoFinanceiroDTO.saldoDescontado}">
+									<f:converter converterId="converter.MoedaConverter"/>
+								</h:outputText>
+							</h:panelGrid>
+					</rich:collapsiblePanel>
+					
+				</h:panelGrid>
+				</h:form>
+				<br />
+				
+				
+		</ui:define>
+
+	</ui:composition>
+
+</ui:component>

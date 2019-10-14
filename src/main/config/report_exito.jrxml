@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="426" leftMargin="113" rightMargin="56" topMargin="36" bottomMargin="14" uuid="899f63ce-8a14-40a7-af26-ff1da263e955">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="21"/>
+	<field name="conteudo" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="caso" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="77">
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true" isLazy="true" evaluationTime="Column">
+				<reportElement uuid="777c060b-e80b-4c23-ab68-a333912522e4" mode="Transparent" x="102" y="10" width="223" height="56"/>
+				<imageExpression><![CDATA["/opt/fontes/controle/controle/src/main/config/sptb-image.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
+			<image>
+				<reportElement uuid="24e6a4cc-ca2a-4896-b22e-102b05c89e44" x="47" y="8" width="303" height="29"/>
+				<imageExpression><![CDATA["/home/giuliano/sptb.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="230" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement uuid="b9ecb3a4-e25a-4ede-bfb8-780faeca34f3" x="21" y="159" width="365" height="16" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conteudo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="886a648a-ddaf-4c59-8ad7-801fb4880626" x="22" y="67" width="61" height="20"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9d71c640-6130-41ed-9b35-0626eb091c98" x="109" y="67" width="269" height="20"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8d2472f1-af5f-4317-a0cb-a644932831bd" x="49" y="15" width="329" height="33"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE TRABALHO E HONORÁRIOS ADVOCATÍCIOS FINALIZAÇÃO DE CASO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b0ce1c5f-ffff-4657-80f2-12234a8fe905" x="21" y="90" width="62" height="20"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Caso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1cc9cc46-8e19-41e9-83b2-ee2ddad99adc" x="109" y="90" width="269" height="20"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="105">
+			<rectangle>
+				<reportElement uuid="d6e0ae8e-f419-4780-82f3-34af1d7ef952" x="155" y="22" width="231" height="78" forecolor="#BBB2B2"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="ba45792e-fdfe-431b-91aa-3fa458f0d472" x="168" y="36" width="208" height="52"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[RUA VER. WASHINGTON MANSUR, 292
+80540 210 CURITIBA PR
+TEL +55 41 3079 0200
+WWW.SPTB.ADV.BR]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,281 @@
+
+#topo *.rf-p {
+	border: 0px;
+	padding: 0px;
+}
+#topo *.rf-p-b {	
+	padding: 0px;
+	border: 0px;
+}
+#topo *.rf-p-hdr {
+	padding: 0px;
+	border: 0px;	
+}
+
+#titulo *.rf-p-b {	
+	padding: 0px;
+	height: 34px;
+}
+#titulo *.rf-tb {
+	border: 0px;
+	padding: 0px;
+	background-color: transparent;
+	background-image: none;
+}
+#titulo *.rf-tb-itm {
+	padding: 0px;
+	white-space: nowrap;
+}
+#menu_horizontal *.rf-tb {
+	border: 1px solid;
+	border-color: #C4C0B9;
+	color: #000000;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	padding: 1px 5px 1px 16px;
+}
+
+#menu_horizontal *.rf-ddm-itm-lbl {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
+#menu_horizontal div {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
+#menu_horizontal *.rf-ddm-itm-sel {
+	border: 1px solid;
+	border-color: #e4973d;
+	cursor: pointer;
+	padding: 1px 36px 2px 2px;
+	background-color: #fae6b1;
+	background-image: none;
+	z-index: 10;
+}
+#menu_horizontal *.rf-ddm-sel {
+	background-image: none;
+	background-color: #ffffff;
+	border: 1px solid;
+	border-color: #D4CFC7;
+	cursor: pointer;
+}
+
+
+#navegacao *.rf-tb {	
+	background-color: #ffffff;
+	background-image: none;
+	color: #023e84;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: normal;		
+	padding: 0px 10px 0px 22px;
+	border-bottom: solid 1px #cccccc;
+}
+#navegacao *.rf-tb-itm{
+	padding: 0px 3px 0px 3px;
+	border: 0px;
+}
+
+
+
+#body input {
+	font-size: 12px;
+	padding: 2px;
+}
+
+#body *.rf-cp-lbl {
+	/* color: #286697;
+	font-weight: normal;
+	font-size: 12px;
+	white-space: nowrap; */
+}
+
+#body *.rf-cp-b{
+	/* background-color: #edecea; */
+}
+#body *.rf-tb {	
+	background-image: none;
+	border: 0px;
+	padding: 0px;
+}
+#body *.rf-pm-itm {
+	border: 0px;
+	color: black;
+	cursor: pointer;
+	padding: 2px 1px 2px 2px;
+	white-space: nowrap;
+}
+#body *.rf-pm-itm-lbl {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	color: #033057;
+	padding: 0px;
+	white-space: normal !important;
+}
+#body *.rf-pm-top-gr {
+	border: 0px;
+	margin-bottom: 3px;
+}
+#body *.rf-pm-top-gr-hdr {
+	cursor: pointer;
+	font-weight: normal;
+	white-space: nowrap;
+	border: solid 1px #c4bfb9;
+}
+#body *.rf-pm-top-gr-lbl {
+	display: inline-block;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	padding: 0px;
+	white-space: normal !important;
+}
+#body *.rf-pm-top-gr-exp-ico {
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+	margin: 0px 0px;
+	width: 16px;
+}
+#body *.rf-pm-top-gr-ico {
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+	margin: 0px 0px;
+	width: 16px;
+}
+
+/*** RICH MESSAGES (NO PLURAL, OU SEJA MENSAGENS CENTRALIZADAS EM UM SÓ LUGAR) ***/
+
+
+.rf-msgs {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+	margin: auto;
+	margin-bottom: 2px;
+	text-align: center;
+}
+
+.rf-msgs-sum{
+	font-size: 12px;	
+	display: block;
+	text-align: center;
+}
+
+.rf-msgs-det{
+	font-size: 10px;
+	color: graytext;
+	display: block;
+	text-align: center;	
+}
+
+.rf-msgs-inf,.rf-msgs-wrn,.rf-msgs-err,.rf-msgs-ftl {
+	padding-left: 20px;
+	padding-right: 2px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	vertical-align: middle;
+}
+
+
+
+.rf-msgs-inf {
+	color: black;
+	background-color: #E8FFE0;
+	background-image: url("../resources/images/icon_msg_sucesso.png");
+	border: 1px solid #FFCC00;
+}
+
+.rf-msgs-wrn {
+	color: black;
+	background-color: #FFEBB4;
+	background-image: url("../resources/images/icon_msg_aviso.png");
+	border: 1px solid #FFCC00;
+}
+
+.rf-msgs-err {
+	color: red;
+	background-color: #FFE8E0;
+	background-image: url("../resources/images/icon_msg_erro.png");
+	border: 1px solid #FFCC00;
+}
+
+.rf-msgs-ftl {
+	color: red;
+	background-color: #FFE8E0;
+	background-image: url("../resources/images/icon_msg_erro.png");
+	border: 1px solid #FFCC00;
+}
+
+
+/*** RICH MESSAGE (SINGULAR, OU SEJA, DE CAMPO) *****/
+.rf-msg {
+	font-family: Arial, Verdana, sans-serif;
+}
+
+.rf-msg-sum{
+	font-size: 12px;	
+}
+
+.rf-msg-det{
+	font-size: 12px;
+}
+
+.rf-msg-inf,.rf-msg-wrn,.rf-msg-err,.rf-msg-ftl {
+	padding-left: 20px;
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	vertical-align: middle;
+}
+
+.rf-msg-inf {
+	color: blue;
+	background-image: url("../resources/images/icon_msg_sucesso.png");
+}
+
+.rf-msg-wrn {
+	color: yellow;
+	background-image: url("../resources/images/icon_msg_aviso.png");
+}
+
+.rf-msg-err {
+	color: red;
+	background-image: url("../resources/images/icon_msg_erro.png");
+}
+
+.rf-msg-ftl {
+	color: red;
+	background-image: url("../resources/images/icon_msg_erro.png");
+}
+
+ 
+/******** DATA TABLE  **********/
+.rf-dt{
+	width: 100%;
+}
+
+/****** COR-SIM, COR-NAO ******/
+.even-row {
+    background-color: LightBlue;
+}
+ 
+.odd-row {
+    background-color: white;
+}
+/****** COR-SOBRE ******/
+.active-row {
+    background-color: LightGray;
+    cursor: pointer;
+}
+
+/***** TAMANHO DA COLUNA DE ICONE ****/
+.w30{
+	width: 30px;
+	text-align: center;
+}
+
+
+#body *.rf-edt-r-sel{
+	background-color: red;
+}

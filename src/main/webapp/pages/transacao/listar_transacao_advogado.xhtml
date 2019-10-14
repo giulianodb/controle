@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				<h:form>
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Lista de pagamentos" />
+					</h:panelGrid>
+				
+					
+					<br />
+
+					<rich:collapsiblePanel header="Pesquisa" switchType="client">
+						<table class="form_tabela">
+							<tr>
+								<td class="form_label">Nome advogado:</td>
+								<td>
+									    <h:selectOneMenu  value="#{transacaoControl.idAdvogadoPesquisa}">
+								 			<f:selectItem itemLabel="Selecione" />
+											<f:selectItems value="#{transacaoControl.listaAdvogadoCombo}"
+											 	var="adv" 
+											 	itemValue="#{adv.idUsuario}" 
+											 	itemLabel="#{adv.nome}"											 	
+											 												 	
+											 	></f:selectItems>
+																					 		
+									</h:selectOneMenu>	
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+								<td class="form_label">Data início:</td>
+								<td>
+										<rich:calendar id="dataInicio"  datePattern="dd/MM/yyyy" popup="true" value="#{transacaoControl.dataInicialPesquisa}"/>
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Data fim:</td>
+								<td>
+										<rich:calendar id="dataFim" datePattern="dd/MM/yyyy" popup="true"  value="#{transacaoControl.dataFinalPesquisa}" />
+								
+								</td>
+							</tr>
+										
+						
+						</table>
+						<hr />
+						<h:panelGrid columns="2" cellpadding="3" styleClass="botoes">
+							<h:commandButton action="#{transacaoControl.pesquisarTransacaoAdvogado()}" value="Pesquisar" styleClass="btn_principal" immediate="false"/>
+						</h:panelGrid>
+
+					</rich:collapsiblePanel>
+					
+				</h:panelGrid>
+				</h:form>
+				<br />
+				
+				<h:form>
+					
+					<rich:dataTable id="listaTransacao" 
+						cellpadding="0"
+						width="50%" 
+						cellspacing="0" 
+						border="0" 
+						var="t"
+						value="#{transacaoControl.listaTransacao}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						>
+									
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Advogado" />
+							</f:facet>
+							<h:outputText value="#{t.conta.advogado.nome}"></h:outputText>
+						</rich:column>
+						
+						
+						<rich:column width="100%" >
+							<f:facet name="header">
+								<h:outputText value="Data pagamento" />
+							</f:facet>
+							<h:outputText value="#{t.dataTransacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</rich:column>
+												
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Valor" />
+							</f:facet>
+							<h:outputText value="R$ #{t.valorTransacao}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						<rich:column style="width: 3%; text-align: center;">
+							<f:facet name="header">
+								<h:outputText value="Excluir" />
+							</f:facet>
+									
+															
+							<a4j:commandLink execute="@this" render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                    			<h:graphicImage  library="images"  name="delete.png" alt="delete" title="Excluir transação"  />
+                    			<a4j:param value="#{t.idTranasacao}" assignTo="#{transacaoControl.idTransacao}" />
+                			</a4j:commandLink>
+							
+						</rich:column>
+						
+														
+<!-- 						<f:facet name="footer"> 
+							<rich:dataScroller for="listaCasos" maxPages="5"
+								fastControls="hide" />
+							</f:facet>
+							-->
+					</rich:dataTable>
+					
+					<rich:popupPanel id="confirmPane" autosized="true">
+            			Deseja realmente excluir pagamento? <br/>
+            			<a4j:commandButton value="Cancelar" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
+            			<a4j:commandButton value="Excluir" onclick="remove();return false;" />
+        			</rich:popupPanel>
+					
+					<a4j:jsFunction name="remove" action="#{transacaoControl.deletarTransacaoAdvogado()}" render="listaTransacao" execute="@this"
+            oncomplete="#{rich:component('confirmPane')}.hide();" />
+					
+					
+					
+					
+				</h:form>
+				<rich:jQuery  selector=".stable tr" event="mouseover"
+					query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"
+					query="jQuery(this).removeClass('active-row')" />
+
+			<!--		</h:panelGrid>		-->
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+
+	</ui:composition>
+
+</ui:component>

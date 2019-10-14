@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				<h:form>
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Lista de Trabalhos" />
+					</h:panelGrid>
+									
+					<br />
+
+					<rich:collapsiblePanel header="Pesquisa" switchType="client" >
+						<table class="form_tabela">
+							<tr>
+								<td class="form_label">Nome cliente:</td>
+								<td><h:inputText id="nomeCliente" name="Nome do cliente" value="#{trabalhoControl.clientePesquisa}" size="50" style="font-size: 14px; font-family: Courier new"/></td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Nome caso:</td>
+								<td><h:inputText id="nomeCaso" name="Nome do caso" value="#{trabalhoControl.trabalhoPesquisa.caso.nomeCaso}" size="50" style="font-size: 14px; font-family: Courier new"/> </td>
+							</tr>
+							
+							<tr>
+								<td class="form_label"><h:outputText value="Advogado:" rendered="#{rich:isUserInRole('Administrador')}" /> </td>
+								<td><h:inputText id="advogado" name="Advogado" value="#{trabalhoControl.trabalhoPesquisa.advogado.nome}" size="50" style="font-size: 14px; font-family: Courier new" rendered="#{rich:isUserInRole('Administrador')}"/> </td>
+							</tr>
+							
+							
+							<tr>
+								<td class="form_label">Data início:</td>
+								<td>
+										<rich:calendar id="dataInicio"  datePattern="dd/MM/yyyy" popup="true" value="#{trabalhoControl.dataInicioPesquisa}"/>
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Data fim:</td>
+								<td>
+										<rich:calendar id="dataFim" datePattern="dd/MM/yyyy" popup="true"  value="#{trabalhoControl.dataFimPesquisa}" />
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label"><h:outputText value="Status:" rendered="#{rich:isUserInRole('Administrador')}"/> </td>
+								<td>
+									<h:selectOneMenu value="#{trabalhoControl.trabalhoPesquisa.statusTrabalho}" rendered="#{rich:isUserInRole('Administrador')}">
+							 			<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{trabalhoControl.listaStatusTrabalhoPesquisa}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p.descricao}" ></f:selectItems>
+										 	<a4j:ajax event="valueChange" execute="@this"  immediate="false" render="@this"/>
+									</h:selectOneMenu>	
+								
+								</td>
+							</tr>
+						</table>
+						<hr />
+						<h:panelGrid columns="4" cellpadding="3" styleClass="botoes">
+							<h:commandButton action="#{trabalhoControl.pesquisarTrabalho()}" value="Pesquisar" styleClass="btn_principal" immediate="false"/>
+							<h:outputText value="                                                " />
+							<h:commandButton action="#{trabalhoControl.salvarAlteradosAdm()}" value="Somente Salvar" styleClass="btn_principal" immediate="false" rendered="#{rich:isUserInRole('Administrador')}"/>
+ 						 	
+ 							<h:commandButton action="#{trabalhoControl.enviarFaturamento()}" value="Salvar e Enviar faturamento" styleClass="btn_principal" immediate="false" rendered="#{rich:isUserInRole('Administrador')}"/> 
+					
+						</h:panelGrid>
+
+					</rich:collapsiblePanel>
+					
+				</h:panelGrid>
+				</h:form>
+				<br />
+				
+				<h:form>
+
+					<rich:dataTable id="listaTrabalhos" 
+						cellpadding="0"
+						width="50%" 
+						cellspacing="0" 
+						
+						border="0" 
+						var="trabalho"
+						value="#{trabalhoControl.listaTrabalho}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						>
+						
+						<rich:column style="width: 1%; text-align: center;" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{trabalhoControl.statusCheckBox}">
+									<a4j:ajax event="click" listener="#{trabalhoControl.selecionarListaTrabalho(event)}" render="listaTrabalhos" ></a4j:ajax>
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							 <h:selectBooleanCheckbox value="#{trabalho.alterarViaAdm}" >
+							 	<a4j:ajax event="click" render="listaTrabalhos" ></a4j:ajax>
+							 </h:selectBooleanCheckbox>	
+						</rich:column>
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Cliente" />
+							</f:facet>
+							<h:outputText value="#{trabalho.caso.cliente.nome}"></h:outputText>
+						</rich:column>
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Caso" />
+							</f:facet>
+							<h:outputText value="#{trabalho.caso.nomeCaso}"></h:outputText>
+						</rich:column>
+						
+								
+						<rich:column style="width: 8%; text-align: center;">
+							<f:facet name="header">
+								<h:outputText value="Data trabalho" />
+							</f:facet>
+							<h:outputText value="#{trabalho.dataTrabalho}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column style="width: 7%;">
+							<f:facet name="header">
+								<h:outputText value="Advogado" />
+							</f:facet>
+							<h:outputText value="#{trabalho.advogado.nome}"></h:outputText>
+						</rich:column>
+										
+						<rich:column style="width: 5%;">
+							<f:facet name="header">
+								<h:outputText value="Tempo" />
+							</f:facet>
+							<h:selectOneMenu value="#{trabalho.horasTrabalho}" rendered="#{rich:isUserInRole('Administrador')}">
+							 		<f:converter converterId="converter.HoraConverter"></f:converter> 
+									<f:selectItems value="#{trabalhoControl.listaHorarios}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p}" 
+										 	immediate="true"
+										 	valueChangeListener="#{trabalhoControl.valueChangeListener}"
+										 	
+										 	  />
+										
+										<a4j:ajax event="change" render="total" execute="@form">
+		             					</a4j:ajax>
+								</h:selectOneMenu>
+								
+								<h:outputText value="#{trabalho.horasTrabalho}" rendered="#{!rich:isUserInRole('Administrador')}">
+									<f:converter converterId="converter.HoraConverter"/>
+								</h:outputText>	
+							
+						</rich:column>
+						
+						
+			
+						
+						<rich:column style="width: 7%; text-align: center;" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:outputText value="Valor hora" />
+							</f:facet>
+							<h:inputText  value="#{trabalho.valorHora}" size="5" style="widht:12" >
+								<f:converter converterId="converter.MoedaConverter"/>
+									<a4j:ajax event="change" render="total" execute="@form">
+		             					</a4j:ajax>
+							</h:inputText>
+						</rich:column>
+						
+						<rich:column style="width: 7%; text-align: center;" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:outputText value="Valor Total"/>
+									
+						
+							</f:facet>
+							<h:outputText value="R$ #{trabalho.valorTotalTrabalho}" id="total">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+							</rich:column>
+						
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Descrição" />
+							</f:facet>
+							<h:outputText value="#{trabalho.descricaoTrabalho}" id="descricao">
+						</h:outputText>
+							 
+						</rich:column>
+						
+						<rich:column style="width: 5%;" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:outputText value="Cobrável" />
+								<h:selectOneMenu value="#{trabalhoControl.mudarSelecaoCobravel}">
+									<f:selectItem itemLabel="Selecione" />
+									<f:selectItem itemLabel="Sim" itemValue="true"/> 	
+									<f:selectItem itemLabel="Não" itemValue="false"/>
+									<a4j:ajax event="valueChange" execute="@this" listener="#{trabalhoControl.mudarListaTrabalhoCobravel(event)}" immediate="false" render="listaTrabalhos"/>
+								</h:selectOneMenu>
+						
+								
+							</f:facet>
+							
+								<h:selectOneMenu value="#{trabalho.cobravel}">
+									<f:selectItem itemLabel="Sim" itemValue="true"/> 	
+									<f:selectItem itemLabel="Não" itemValue="false"/>
+									<a4j:ajax event="valueChange" execute="@this" immediate="false" render="listaTrabalhos"/>
+								</h:selectOneMenu>
+						
+						</rich:column>
+						
+								
+						<rich:column style="width: 5%;"  rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:outputText value="Status" />
+									<h:selectOneMenu value="#{trabalhoControl.mudarSelecaoStatusTrabalho}">
+							 			<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{trabalhoControl.listaStatusTrabalhoPesquisa}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p.descricao}" ></f:selectItems>
+										 		<a4j:ajax event="valueChange" execute="@this" listener="#{trabalhoControl.mudarListaTrabalhoFaturamento(event)}" immediate="false" render="listaTrabalhos"/>
+										 	
+									</h:selectOneMenu>	
+							</f:facet>
+							
+									<h:selectOneMenu value="#{trabalho.statusTrabalho}">
+							 			<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{trabalhoControl.listaStatusTrabalhoPesquisa}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p.descricao}" ></f:selectItems>
+										 	<a4j:ajax event="valueChange" execute="@this" immediate="false" render="listaTrabalhos"/>
+									</h:selectOneMenu>	
+						</rich:column>
+						
+						<rich:column style="width: 7%; text-align: center;">
+							<f:facet name="header">
+								<h:outputText value="Ações" />
+							</f:facet>
+							
+							<h:commandLink action="#{trabalhoControl.iniciarCadastrarTrabalho()}">
+								<f:setPropertyActionListener target="#{trabalhoControl.trabalho.caso}" value="#{trabalho.caso}"/>
+								<h:graphicImage library="images" name="add.png" title="Inserir trabalho" />
+							</h:commandLink>
+							<h:outputText value=" " />
+							<h:commandLink action="#{trabalhoControl.iniciarAlterarTrabalho()}">
+								<f:setPropertyActionListener target="#{trabalhoControl.trabalho}" value="#{trabalho}"/>
+								<h:graphicImage library="images" name="pencil.png" title="Editar Trabalho" />
+							</h:commandLink>
+							<h:outputText value=" " />
+							<h:commandLink action="#{trabalhoControl.iniciarExcluirTrabalho()}">
+								<f:setPropertyActionListener target="#{trabalhoControl.trabalho}" value="#{trabalho}"/>
+								<h:graphicImage library="images" name="delete.png" title="Excluir Trabalho" />
+							</h:commandLink>
+				
+					</rich:column>
+ 
+					</rich:dataTable>
+					
+						<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+							<h:commandButton action="#{trabalhoControl.salvarAlteradosAdm()}" value="Somente Salvar" styleClass="btn_principal" immediate="false" rendered="#{rich:isUserInRole('Administrador')}"/>
+ 						 	<h:outputText value="                                                " />
+ 							<h:commandButton action="#{trabalhoControl.enviarFaturamento()}" value="Salvar e Enviar faturamento" styleClass="btn_principal" immediate="false" rendered="#{rich:isUserInRole('Administrador')}"/> 
+						</h:panelGrid>
+								
+				</h:form>
+				<rich:jQuery  selector=".stable tr" event="mouseover"
+					query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"
+					query="jQuery(this).removeClass('active-row')" />
+
+			<!--		</h:panelGrid>		-->
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+
+	</ui:composition>
+
+</ui:component>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+						<h:form>
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Faturamentos" />
+					</h:panelGrid>
+									
+					<br />
+
+					<rich:collapsiblePanel header="Pesquisa" switchType="client">
+						<table class="form_tabela">
+							<tr>
+								<td class="form_label">Nome cliente:</td>
+								<td><h:inputText id="nomeCliente" name="Nome do cliente" value="#{faturaControl.fatura.cliente.nome}" size="50" style="font-size: 14px; font-family: Courier new"/></td>
+							</tr>
+												
+							<tr>
+								<td class="form_label">Data início:</td>
+								<td>
+									<rich:calendar id="dataInicio"  datePattern="dd/MM/yyyy" popup="true" value="#{faturaControl.dataInicioPesquisa}"/>
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Data fim:</td>
+								<td>
+										<rich:calendar id="dataFim" datePattern="dd/MM/yyyy" popup="true"  value="#{faturaControl.dataFimPesquisa}" />
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Status:</td>
+								<td>
+									<h:selectOneMenu value="#{faturaControl.fatura.statusFatura}">
+							 			<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{faturaControl.listaStatusFaturaPesquisa}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p.descricao}" ></f:selectItems>
+									</h:selectOneMenu>	
+								
+								</td>
+							</tr>
+								
+							
+						
+						</table>
+						<hr />
+						<h:panelGrid columns="2" cellpadding="3" styleClass="botoes">
+							<h:commandButton action="#{faturaControl.pesquisarFatura()}" value="Pesquisar" styleClass="btn_principal" immediate="false"/>
+					
+						</h:panelGrid>
+
+					</rich:collapsiblePanel>
+					
+				</h:panelGrid>
+				</h:form>
+				<br />
+											
+			<h:form>
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+ 						<h:commandButton action="#{faturaControl.pagarFaturas()}" value="Receber faturas" styleClass="btn_principal" immediate="false" rendered="false"/>
+ 						
+ 						<h:commandButton action="#{faturaControl.gerarArquivoDistribuicao()}" value="Distribuição txt" styleClass="btn_principal" rendered="false" immediate="false" alt="Gera arquivo para integração de distribuição"/> 
+ 						
+ 						<h:commandButton action="#{faturaControl.gerarArquivoCSVDistribuicao()}" value="Distribuição Excel" styleClass="btn_principal" immediate="false" alt="Gera arquivo para integração de distribuição"/>
+ 						
+						</h:panelGrid>
+					<rich:dataTable id="listaFatura" 
+						cellpadding="0"
+						width="50%" 
+						cellspacing="0" 
+						border="0" 
+						var="fatura"
+						value="#{faturaControl.listFatura}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						
+						>
+						<rich:column style="width: 1%; text-align: center;">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{faturaControl.statusCheckBox}">
+									<a4j:ajax event="click" listener="#{faturaControl.selecionarListaFatura(event)}" render="listaFatura" ></a4j:ajax>
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							 <h:selectBooleanCheckbox value="#{fatura.faturaSelecionada}" />
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Nome cliente" />
+							</f:facet>
+							<h:outputText value="#{fatura.cliente.nome}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Data fatura" />
+							</f:facet>
+							<h:outputText value="#{fatura.dataFatura}" >
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Data vencimento" />
+							</f:facet>
+							
+							<h:outputText value="--" rendered="#{fatura.dataPrevisaoPagamento == null}">
+							</h:outputText>
+							
+							<h:outputText value="#{fatura.dataPrevisaoPagamento}" rendered="#{fatura.dataPrevisaoPagamento != null}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Valor total fatura" />
+							</f:facet>
+							<h:outputText value="R$ #{fatura.valorTotalFatura()}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Status" />
+							</f:facet>
+								<h:outputText  value="#{fatura.statusFatura.descricao}"/>
+						</rich:column>
+								<!--	
+						 <rich:column width="10%">
+							<f:facet name="header">
+								<h:outputText value="Valor pago" />
+							</f:facet>
+								<h:inputText value="#{fatura.valorPagamento}" >
+									<f:converter converterId="converter.MoedaConverter"/>
+								</h:inputText>			
+						</rich:column>
+					 -->
+					 	<rich:column width="10%">
+							<f:facet name="header">
+								<h:outputText value="Tipo fatura" />
+							</f:facet>
+								<h:outputText  value="#{fatura.tipoFatura()}"/>			
+						</rich:column>
+					 
+<!-- 						<rich:column width="10%"> -->
+<!-- 							<f:facet name="header"> -->
+<!-- 								<h:outputText value="Data pagamento" /> -->
+<!-- 							</f:facet> -->
+<!-- 								<rich:calendar id="dataPagamento"  datePattern="dd/MM/yyyy" popup="true" value="#{fatura.dataPagamento}" />			 -->
+<!-- 						</rich:column> -->
+						
+						
+						
+						
+		
+					<rich:column style="width: 10%; text-align: center;">
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<h:commandLink action="#{faturaControl.gerarRelatorioFatura(fatura,true,true)}">
+							<f:setPropertyActionListener target="#{faturaControl.fatura}" value="#{fatura}"/>
+							<h:graphicImage library="images" name="icone_pdf.gif" title="Gerar relatório" />
+					    </h:commandLink>
+					       <h:outputText value="   &#160; " />
+					          <h:outputText value="   &#160; " />
+					    	<h:commandLink action="#{faturaControl.gerarRelatorioFaturaExcel(fatura,true)}" rendered="#{fatura.tipoFatura() == 'Caso variável'}">
+							<f:setPropertyActionListener target="#{faturaControl.fatura}" value="#{fatura}"/>
+							<h:graphicImage library="images" name="page_excel.png" title="Visualizar excel" />
+					    </h:commandLink>
+					    
+					    
+					    <h:outputText value="&#160;" />
+					       <h:outputText value="&#160;" />
+						<h:commandLink action="#{faturaControl.gerarRelatorioFatura(fatura,false,true)}" >
+							<h:graphicImage library="images" name="magnifier.png" title="Visualizar relatório" />
+						</h:commandLink>  
+					    <h:outputText value="   &#160; " />
+						   <h:outputText value="  &#160; " />
+						<h:commandLink action="#{casoControl.definirDistribuicaoExito(fatura.parcelaExito.caso)}" rendered="#{(not empty fatura.parcelaExito) and (empty fatura.listParticipacao)}">
+							<h:graphicImage library="images" name="table_row_insert.png" title="Definir distribuicao" />
+						</h:commandLink>
+				 	    
+					   <h:outputText value="   &#160; " />
+					      <h:outputText value="   &#160;" />
+						<a4j:commandLink execute="#{participacaoControl.listarParticipacaoPorFatura(fatura)}" 
+								render="panelParticipacao" oncomplete="#{rich:component('panelParticipacao')}.show()">
+								<h:graphicImage library="images" name="text_list_bullets.png" title="Distribuição" />
+									
+						</a4j:commandLink>
+						
+										   <h:outputText value="   &#160; " />
+										      <h:outputText value="  &#160;  " />
+					<a4j:commandLink execute="@this" render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                   		<h:graphicImage  library="images"  name="delete.png" alt="delete" title="Excluir fatura"  />
+                    	<a4j:param value="#{fatura.idFatura}" assignTo="#{faturaControl.idFatura}" />
+                	</a4j:commandLink>
+                	
+                	
+                			<h:commandLink action="#{faturaFixoControl.adicionarCriterioTrabalho(fatura.idFatura)}" rendered="#{fatura.pendenciaCriterioTrabalho}">
+							Critério trabalho
+					    </h:commandLink>
+
+					    <h:outputText value="   &#160; " />
+						<h:outputText value="  &#160; " />
+				 	    
+						<h:commandLink action="#{faturaControl.gerarRelatorioFaturaExcel(fatura,true)}" rendered="#{fatura.pendenciaCriterioTrabalho}">
+							<f:setPropertyActionListener target="#{faturaControl.fatura}" value="#{fatura}"/>
+							Indicação
+					    </h:commandLink>
+						
+						
+					</rich:column>
+								
+					</rich:dataTable>
+					
+					
+       				 <a4j:jsFunction name="remove" action="#{faturaControl.deletarFatura()}" render="listaFatura" execute="@this"
+           				 oncomplete="#{rich:component('confirmPane')}.hide();" />
+					
+					<rich:popupPanel id="confirmPane" autosized="true">
+            			Deseja realmente excluir fatura? <br/>
+            			<a4j:commandButton value="Cancelar" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
+            			<a4j:commandButton value="Excluir" render="listaFatura" onclick="remove();return false;" />
+        			</rich:popupPanel>
+					
+								
+							<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+ 							<h:commandButton action="#{faturaControl.pagarFaturas()}" value="Receber faturas" styleClass="btn_principal" immediate="false" rendered="false"/> 
+ 								
+ 							<h:commandButton action="#{faturaControl.gerarArquivoDistribuicao()}" value="Distribuição txt" styleClass="btn_principal" rendered="false" immediate="false" alt="Gera arquivo para integração de distribuição"/> 
+ 							
+ 							<h:commandButton action="#{faturaControl.gerarArquivoCSVDistribuicao()}" value="Distribuição Excel" styleClass="btn_principal" immediate="false" alt="Gera arquivo para integração de distribuição"/>
+ 					
+						</h:panelGrid>
+
+				</h:form>
+				<rich:jQuery  selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"  query="jQuery(this).removeClass('active-row')" />
+			
+			
+				<rich:popupPanel id="panelParticipacao" modal="true" resizeable="false" autosized="true" 
+					header="Detalhes Participacao" domElementAttachment="form">
+					
+					<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+					</rich:messages>
+					
+					<rich:dataTable  var="p" 
+						value="#{participacaoControl.listParticipacao}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable">
+						
+						
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Advogado" />
+							</f:facet>
+							<h:outputText value="#{p.advogado.nome}" size="5"/>
+							<h:outputText value="Fundo" size="5" rendered="#{p.fundo}"/>
+							<h:outputText value="Imposto" size="5" rendered="#{p.imposto}"/>
+							
+						</rich:column>
+												
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Sócio" />
+							</f:facet>
+							<h:outputText  value="#{p.porcentagemParticipacaoSocio} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText >
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Trabalho" />
+							</f:facet>
+							<h:outputText  value="#{p.porcentagemParticipacaoTrabalho} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText >	
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Indicação" />
+							</f:facet>
+							<h:outputText  value="#{p.porcentagemIndicacao} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText >
+						</rich:column>
+						<rich:column> 
+							<f:facet name="header">
+								<h:outputText value="Valor total" />
+							</f:facet>
+							<h:outputText  value="#{p.valorTotalParticipacao} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText >
+						</rich:column>
+				
+					</rich:dataTable>
+					<h:panelGrid styleClass="botoes">
+						<h:button value="Fechar" onclick="#{rich:component('panelParticipacao')}.hide(); return false;" />
+					</h:panelGrid>
+				</rich:popupPanel>
+				
+			
+			
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+	</ui:composition>
+
+</ui:component>

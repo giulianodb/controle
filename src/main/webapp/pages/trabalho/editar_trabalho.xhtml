@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+		
+		<h:form id="idForm">
+				
+				<h:inputHidden value="#{trabalhoControl.trabalho.idTrabalho}" rendered="#{trabalhoControl.operacao == 'Alterar'}"/>
+			
+				
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Cadastrar Trabalho"  />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Informações Trabalho - Caso #{trabalhoControl.trabalho.caso.nomeCaso} - Cliente: #{trabalhoControl.trabalho.caso.cliente.nome}" switchType="client">
+					<h:panelGrid columns="3">
+				
+									
+						<h:outputText value="*Data: " styleClass="form_label" />
+						<rich:calendar id="data" required="true" value="#{trabalhoControl.trabalho.dataTrabalho}"
+							datePattern="dd/MM/yyyy" popup="true" />
+						<rich:message for="data" />
+						
+										
+						<h:outputText value="*Tempo:" styleClass="form_label" />
+						
+						
+						<h:selectOneMenu value="#{trabalhoControl.trabalho.horasTrabalho}" id="horasTrabalho">
+							 	<!-- --> <f:converter converterId="converter.HoraConverter"></f:converter> 
+								<f:selectItems value="#{trabalhoControl.listaHorarios}" var="p" itemValue="#{p}" itemLabel="#{p}" />
+				
+					</h:selectOneMenu>		
+						
+								
+						<rich:message for="horasTrabalho" />
+										
+							
+						<h:outputText value="*Descrição" styleClass="form_label" />
+						<h:inputTextarea value="#{trabalhoControl.trabalho.descricaoTrabalho}" id="descricao" required="true" label="Descrição" 
+						maxlength="250" cols="50" rows="5" size="100" style="font-size: 14px; font-family: Courier new"
+					   onkeyup="document.getElementById('idForm:cont').value = 240 - this.value.length" >
+					    <f:validateLength maximum="240"></f:validateLength>
+					    	<rich:message for="descricao" />
+					    </h:inputTextarea>    
+                      <h:inputText  id="cont" value="240" readonly="true" size="2"/>  
+					
+									
+						
+						
+						<h:outputText value="Advogado:" styleClass="form_label"   rendered="#{(rich:isUserInRole('Administrador')) and (trabalhoControl.operacao == 'Alterar')}" />
+						<h:selectOneMenu id="advogado" value="#{trabalhoControl.idAdvogadoCombo}" rendered="#{(rich:isUserInRole('Administrador')) and (trabalhoControl.operacao == 'Alterar')}">
+							<f:selectItems value="#{trabalhoControl.listaAdvogadosCombo}"
+									 	var="p" 
+									 	itemValue="#{p.idUsuario}" 
+									 	itemLabel="#{p.nome}"/>
+						</h:selectOneMenu>
+						<rich:message for="advogado" />
+								
+						<h:outputText id="cliente" value="Cliente:" styleClass="form_label"  rendered="#{rich:isUserInRole('Administrador') and trabalhoControl.operacao == 'Alterar'}"/>
+						<h:selectOneMenu  value="#{trabalhoControl.idClienteCombo}" rendered="#{rich:isUserInRole('Administrador') and trabalhoControl.operacao == 'Alterar'}">
+							<f:selectItems value="#{trabalhoControl.listaClienteCombo}"
+										 	var="cliente" 
+										 	itemValue="#{cliente.idCliente}" 
+										 	itemLabel="#{cliente.nome}"/>
+							<a4j:ajax event="valueChange" execute="@this" listener="#{trabalhoControl.listarCasosDoCliente(event)}" immediate="false" render="casoCombo"/>
+						</h:selectOneMenu>
+						<rich:message for="cliente" />
+						
+						<h:outputText id="caso" value="Caso:" styleClass="form_label"   rendered="#{rich:isUserInRole('Administrador') and trabalhoControl.operacao == 'Alterar'}" />
+						<h:selectOneMenu value="#{trabalhoControl.idCasoCombo}" id="casoCombo" rendered="#{rich:isUserInRole('Administrador') and trabalhoControl.operacao == 'Alterar'}">
+							<f:selectItems value="#{trabalhoControl.listaCasoCombo}"
+									 	var="caso" 
+									 	itemValue="#{caso.idCaso}" 
+									 	itemLabel="#{caso.nomeCaso}"/>
+							</h:selectOneMenu>
+						<rich:message for="caso" />
+									
+					</h:panelGrid>
+					
+				</rich:collapsiblePanel>
+				
+				
+				<rich:collapsiblePanel header="Trabalho compartilhado" switchType="client">
+				
+					<a4j:commandLink execute="@this" 
+									render="panelUsuarios" oncomplete="#{rich:component('panelUsuarios')}.show()">
+									<h:graphicImage library="images" name="add.png" />
+									Adicionar
+					</a4j:commandLink>
+					
+					<br/><br/>
+					
+					<rich:dataTable  var="usuario" 
+						value="#{trabalhoControl.listUsuarioVinculadosCompartilhamento}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						id="compartilhamento"
+						style="width:30%;">
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>Nome</rich:column>
+								<rich:column>Remover</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+						
+						<rich:column>#{usuario.nome}</rich:column>
+						<rich:column>
+							<a4j:commandLink action="#{trabalhoControl.removerUsuarioCompartilhamento(usuario)}" execute="@this" render="compartilhamento"
+								oncomplete="if (#{empty facesContext.messageList}) { #{rich:component('panelUsuarios')}.hide(); }">
+								<h:graphicImage library="images" name="delete.png" title="Adicionar Usuário" />
+ 							
+							</a4j:commandLink>
+						</rich:column>
+					</rich:dataTable>
+					
+				
+				<rich:popupPanel id="panelUsuarios" modal="true" resizeable="false" autosized="true" 
+					header="Adicionar Usuruário" domElementAttachment="form">
+					
+					<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+					</rich:messages>
+					
+					<rich:dataTable  var="usuario" 
+						value="#{trabalhoControl.listUsuarioNaoVinculadosCompartilhamento}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable">
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>Nome</rich:column>
+								<rich:column>Adicionar</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+						
+						<rich:column>#{usuario.nome}</rich:column>
+						<rich:column>
+							<a4j:commandLink action="#{trabalhoControl.adicionarUsuarioCompartilhamento(usuario)}" execute="@this" render="compartilhamento"
+								oncomplete="if (#{empty facesContext.messageList}) { #{rich:component('panelUsuarios')}.hide(); }">
+								<h:graphicImage library="images" name="add.png" title="Adicionar Usuário" />
+								
+							</a4j:commandLink>
+						</rich:column>
+					</rich:dataTable>
+					<h:panelGrid styleClass="botoes">
+						<h:button value="Fechar" onclick="#{rich:component('panelUsuarios')}.hide(); return false;" />
+					</h:panelGrid>
+				</rich:popupPanel>
+				
+				
+				</rich:collapsiblePanel>
+				
+				
+				<br />
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+					<h:commandButton action="#{trabalhoControl.cadastrarTrabalho()}" value="Salvar trabalho" rendered="#{trabalhoControl.operacao == 'Incluir'}" />
+					<h:commandButton action="#{trabalhoControl.alterarTrabalho()}" value="Alterar trabalho" rendered="#{trabalhoControl.operacao == 'Alterar'}" />
+					<h:commandButton action="#{trabalhoControl.excluirTrabalho()}" value="Excluir trabalho" rendered="#{trabalhoControl.operacao == 'Excluir'}" />
+					<h:commandButton action="#{trabalhoControl.listarTrabalho()}" value="Voltar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

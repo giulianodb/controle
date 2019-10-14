@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+		
+		<h:form>
+				
+				<h:inputHidden value="#{casoControl.caso.idCaso}" rendered="#{casoControl.operacao == 'Alterar'}"/>
+				<h:inputHidden value="#{casoControl.caso.cliente.idCliente}"/>
+				
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Finalizar Caso"  />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Informações para finalizar caso" switchType="client">
+					<h:panelGrid columns="3" id="areaCaso">
+						
+						<h:outputText value="Nome caso:" styleClass="form_label" />
+						<h:outputText value="#{casoControl.caso.nomeCaso}" id="nomeCaso" label="Nome caso" style="font-size: 14px; font-family: Courier new"/>
+								
+						<rich:message for="nomeCaso" />
+						
+						<h:outputText value="Cliente:" styleClass="form_label" />
+						<h:outputText value="#{casoControl.caso.cliente.nome}" id="nomeCliente" label="Nome caso" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="nomeCliente" />
+					
+					
+						<h:outputText value="Êxito:" styleClass="form_label" rendered="#{(rich:isUserInRole('Administrador'))}"/>
+						<h:selectBooleanCheckbox value="#{casoControl.previsaoExito}" id="previsaoExito" rendered="#{(rich:isUserInRole('Administrador'))}">
+							<a4j:ajax event="click" render="areaCaso"></a4j:ajax>
+						</h:selectBooleanCheckbox>
+						<rich:message for="previsaoExito" rendered="#{(rich:isUserInRole('Administrador'))}"/>
+						
+						<h:outputText value="Tipo êxito:" styleClass="form_label" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}"/>
+						<h:selectOneMenu  value="#{casoControl.caso.tipoExito}" id="tipoExito" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}">
+							<f:selectItems value="#{casoControl.listaTipoExito}"
+										 	var="exito" 
+										 	itemValue="#{exito}" 
+										 	itemLabel="#{exito.descricao}"/>
+							<a4j:ajax event="change" render="areaCaso" listener="#{casoControl.tipoExitoListener()}"></a4j:ajax>			 	
+						</h:selectOneMenu>
+						<rich:message for="tipoExito" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}"/>			
+						
+						<h:outputText value="Porcentagem êxito:" styleClass="form_label" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito) and (casoControl.mostrarPorcetagemExito)}"/>
+						<h:inputText id="porcetagemExito" value="#{casoControl.caso.valorPorcetagemExito}" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito) and (casoControl.mostrarPorcetagemExito)}">
+							<f:converter converterId="converter.MoedaConverter" />
+							<a4j:ajax event="blur" render="areaCaso" listener="#{casoControl.porcetagemExitoListener()}"></a4j:ajax>	
+						</h:inputText>
+						<rich:message for="porcetagemExito" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito) and (casoControl.mostrarPorcetagemExito)}"/>
+						
+						<h:outputText value="Base porcentagem êxito:" styleClass="form_label" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito) and (casoControl.mostrarPorcetagemExito)}"/>
+						<h:inputText id="basePorcetagemExito" value="#{casoControl.caso.basePorcetegemExito}" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito) and (casoControl.mostrarPorcetagemExito)}">
+							<f:converter converterId="converter.MoedaConverter" />
+							<a4j:ajax event="blur" render="areaCaso" listener="#{casoControl.porcetagemExitoListener()}"></a4j:ajax>	
+						</h:inputText>
+						<rich:message for="basePorcetagemExito" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito) and (casoControl.mostrarPorcetagemExito)}"/>
+						
+						<h:outputText value="Valor êxito:" styleClass="form_label" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}"/>
+						<h:inputText id="valorExito" value="#{casoControl.caso.valorExito}" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}" readonly="#{casoControl.mostrarPorcetagemExito}">
+							<f:converter converterId="converter.MoedaConverter" />
+						</h:inputText>
+						<rich:message for="valorExito" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}"/>
+						
+						
+						<h:outputText value="* Data vencimento êxito:" styleClass="form_label" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}"/>
+						<rich:calendar id="dataVencimentoExito" value="#{casoControl.caso.parcelaExito.dataVencimento}"	datePattern="dd/MM/yyyy" popup="true" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}" required="true"/>
+						<rich:message for="dataVencimentoExito" rendered="#{(rich:isUserInRole('Administrador')) and (casoControl.previsaoExito)}"/>
+						
+							<h:outputText value="Previsão sucumbência:" styleClass="form_label" rendered="#{rich:isUserInRole('Administrador')}"/>
+						<h:selectBooleanCheckbox value="#{casoControl.caso.previsaoSucumbencia}" id="previsaoSucumbencia" rendered="#{(rich:isUserInRole('Administrador'))}">
+						</h:selectBooleanCheckbox>				
+						<rich:message for="previsaoSucumbencia" rendered="#{rich:isUserInRole('Administrador')}" />
+						
+					</h:panelGrid>
+					<br />
+					
+				</rich:collapsiblePanel>
+				
+				<br />
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+					<h:commandButton action="#{casoControl.fecharCaso()}" value="Finalizar caso" />
+					<h:commandButton action="#{casoControl.alterarCaso()}" value="Alterar caso" rendered="#{casoControl.operacao == 'Alterar'}" />
+					<h:commandButton action="#{casoControl.excluirCaso()}" value="Excluir caso" rendered="#{casoControl.operacao == 'Excluir'}" />
+					<h:commandButton action="#{casoControl.listarCaso()}" value="Voltar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

@@ -1,0 +1,165 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	background-color:#FFFFFF;
+}
+
+.corpo_principal {
+	padding: 10px 10px 10px 10px;
+	vertical-align: top;
+}
+
+.topo_flutuante{
+	width:100%;
+}
+
+table.menu_vertical {
+	width: 100%;
+	padding: 0px;
+}
+
+td.menu_vertical {
+	padding: 8px 8px 8px 15px;
+	width: 200px;
+	vertical-align: top;
+	background-color: #edecea;
+}
+.menu_vertical_recolher {
+	width: 8px;
+	border-left: solid 1px #c4bfb9;
+	border-right: solid 1px #c4bfb9;
+	vertical-align: top;
+	background-color: #ddd8d2;
+	cursor: pointer;
+	color: #2c659c;
+	font-size: 12px;
+	font-weight: bold;
+}
+.vmenu {
+	vertical-align: top;
+	width: 15%;
+	padding-right: 5px;
+}
+.corpo {
+	vertical-align: top;
+	width: 85%;
+	padding-left: 5px;
+}
+
+/** definições do topo **/ 
+#topo table {
+	width: 100%;
+	padding: 0px;
+	border: 0px;
+	font-weight: none;
+}
+
+#topo td { 
+	padding: 0px;
+	font-weight: none;
+}
+#topo .nome_departamento {
+	font-family: Arial;
+	font-size: 11px;
+	font-weight: bold;
+	color:#ffffff;	
+	white-space: nowrap;
+}
+#topo .nome_sistema {
+	font-family: Arial;
+	font-size: 11px;
+	font-weight: bold;
+	color:#ffffff;
+	white-space: nowrap;
+}
+
+#navegacao img {
+	border: 0px;
+}
+
+#body table.titulo {
+	width: 100%;
+	padding: 1px;
+	border-bottom: solid 1px #d4d0c7;
+	border-left: solid 7px #286697;
+}
+#body span.titulo {
+	font-family: Arial;
+	font-size: 14px;
+	color: #286697;
+} 
+
+#body input.btn_principal{
+	color: #ffffff;
+	background-color: #286697;
+	background-image: none;
+}
+
+#body table.form_tabela{	
+	padding: 3px;
+	
+}
+#body *.form_label{	
+	/** background-color: #e6e5e1; **/
+	padding: 3px;
+	font-size: 12px;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+#body *.botoes {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#body hr {
+	border-top: solid 1px #cccccc;
+	border-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;
+}
+
+.col-links {
+	padding: 5px;
+}
+
+.col-alinha-topo {
+	vertical-align: top;
+}
+
+.tab-recursos-col1 {
+	width: 60%;
+	vertical-align: top;
+}
+.tab-recursos-col2 {
+	width: 40%;
+	vertical-align: top;
+}
+
+.titulo-sistema {
+	font-weight: bold;
+	font-size: 26px;
+	font-family: sans-serif;
+	color: #f0fbfb;
+	background-image: url("../resources/images/padrao/titulo_background.png");
+	background-repeat: repeat-x;
+	width: 100%;
+	display: block;
+}
+
+.col-50perc {
+	width: 50%;
+	vertical-align: top;
+}
+
+.link-menu {
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+	font-size: 12px;
+	color: black;
+	padding: 10px;
+}
+
+.myWidth {width:60%; white-space:normal!important}
+

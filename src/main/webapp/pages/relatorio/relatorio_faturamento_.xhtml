@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Faturamentos"  />
+				</h:panelGrid>	
+			
+			<br>
+			</br>
+			<h:outputText value="Não existem faturas para emissão." rendered="#{!faturaControl.mostrarListaCriarFaturamento()}"  />
+				
+				<h:form>
+				
+				<h:panelGrid width="100%">
+						<h:panelGrid columns="4" cellpadding="3" styleClass="botoes" rendered="#{faturaControl.mostrarListaCriarFaturamento()}">
+							<h:outputText value="                                                " />
+ 							<h:commandButton action="#{faturaControl.faturarSelecionados()}" value="Faturar selecionados" styleClass="btn_principal" immediate="false" rendered="#{rich:isUserInRole('Administrador')}"/> 
+						</h:panelGrid>
+					
+				</h:panelGrid>
+			
+					<rich:dataTable id="listaClientes" 
+						cellpadding="0"
+						width="50%" 
+						cellspacing="0" 
+						border="0" 
+						var="fatura"
+						value="#{faturaControl.listaClienteFaturarDTO}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						rendered="#{faturaControl.mostrarListaCriarFaturamento()}"
+						>
+						
+						<rich:column style="width: 1%; text-align: center;" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{faturaControl.statusCheckBox}">
+									<a4j:ajax event="click" listener="#{faturaControl.selecionarListaFaturar(event)}" render="listaClientes" ></a4j:ajax>
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							 <h:selectBooleanCheckbox value="#{fatura.selecionado}" >
+							 	<a4j:ajax event="click" render="listaClientes" ></a4j:ajax>
+							 </h:selectBooleanCheckbox>	
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Nome cliente" />
+							</f:facet>
+							<h:outputText value="#{fatura.nomeCliente}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Quantidade de trabalhos" />
+							</f:facet>
+							<h:outputText value="#{fatura.quantidadeCasosFaturar}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Valor total faturar" />
+							</f:facet>
+							<h:outputText value="R$ #{fatura.valorTotalFatura}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						
+									
+						<rich:column style="width: 10%; text-align: center;">
+						<f:facet name="header">
+							<h:outputText value="Visualizar Relatório" />
+						</f:facet>
+						<h:commandLink action="#{faturaControl.visualizarRelatorio()}">
+							<f:setPropertyActionListener target="#{faturaControl.fatura.cliente.idCliente}" value="#{fatura.idCliente}"/>
+							<h:graphicImage library="images" name="magnifier.png" title="Visualizar relatório" />
+					</h:commandLink>
+					
+						</rich:column>
+					<rich:column style="width: 10%; text-align: center;">
+						<f:facet name="header">
+							<h:outputText value="Gerar Relatório" />
+						</f:facet>
+						<h:commandLink action="#{faturaControl.gerarFaturaCliente()}">
+							<f:setPropertyActionListener target="#{faturaControl.fatura.cliente.idCliente}" value="#{fatura.idCliente}"/>
+							<h:graphicImage library="images" name="icone_pdf.gif" title="Gerar fatura" />
+					</h:commandLink>
+					</rich:column>
+					
+					<rich:column style="width: 10%; text-align: center;">
+						<f:facet name="header">
+							<h:outputText value="Alterar para 'Não cobrável'" />
+						</f:facet>
+						<h:commandLink action="#{faturaControl.alterarNaoCobravel()}">
+							<f:setPropertyActionListener target="#{faturaControl.fatura.cliente.idCliente}" value="#{fatura.idCliente}"/>
+							<h:graphicImage library="images" name="money_delete.png" title="Alterar para não cobrável" />
+						</h:commandLink>
+					</rich:column>
+					
+					
+					</rich:dataTable>
+
+				</h:form>
+				<rich:jQuery  selector=".stable tr" event="mouseover"
+					query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"
+					query="jQuery(this).removeClass('active-row')" />
+
+			<!--		</h:panelGrid>		-->
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+	</ui:composition>
+
+</ui:component>

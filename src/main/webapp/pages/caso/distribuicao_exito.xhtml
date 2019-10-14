@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+
+		<ui:define name="message">
+			<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+			</rich:messages>
+		</ui:define>
+
+		<ui:define name="body">
+		
+		<h:form>
+				
+				<h:inputHidden value="#{casoControl.caso.idCaso}" rendered="#{casoControl.operacao == 'Alterar'}"/>
+						<h:inputHidden value="#{casoControl.caso.cliente.idCliente}"/>
+				
+				<h:panelGrid styleClass="titulo">
+					<h:outputText styleClass="titulo" value="Distribuicao exito"  />
+				</h:panelGrid>
+				<br />
+
+				<rich:collapsiblePanel header="Informações caso" switchType="client">
+					<h:panelGrid columns="3">
+						
+						<h:outputText value="Nome caso:" styleClass="form_label" />
+						<h:outputText value="#{casoControl.caso.nomeCaso}" id="nomeCaso" label="Nome caso" style="font-size: 14px; font-family: Courier new"/>
+								
+						<rich:message for="nomeCaso" />
+						
+						<h:outputText value="Cliente:" styleClass="form_label" />
+						<h:outputText value="#{casoControl.caso.cliente.nome}" id="nomeCliente" label="Nome caso" style="font-size: 14px; font-family: Courier new"/>
+						<rich:message for="nomeCliente" />
+					
+						<h:outputText value="Data êxito:" styleClass="form_label" />
+						<rich:calendar id="dataExito" value="#{casoControl.caso.dataExito}"
+							datePattern="dd/MM/yyyy" popup="true" />
+						<rich:message for="dataExito" />
+						
+						<h:outputText value="Valor êxito:" styleClass="form_label" />
+						<h:inputText id="valorExito" value="#{casoControl.caso.valorExito}">
+							<f:converter converterId="converter.MoedaConverter"/>
+							<a4j:ajax event="blur" execute="@this" listener="#{casoControl.atualizarValoresDistribuicaoExito()}" render="teste"/>
+						</h:inputText>
+						<rich:message for="valorExito" />
+						
+						
+					</h:panelGrid>
+					<br />
+					<rich:panel header="Porcentagens distribuição">
+						<h:panelGrid columns="4" id="teste">
+							<h:outputText value="Porcentagem imposto:" styleClass="form_label" />
+							<rich:inplaceInput value="#{casoControl.porcentagemDistribuicaoExitoImposto}" styleClass="form_label" >
+								<a4j:ajax event="blur" execute="@this" listener="#{casoControl.atualizarValoresDistribuicaoExito()}" render="teste"/>
+								<f:converter converterId="converter.MoedaConverter"/>
+							</rich:inplaceInput>		
+							<h:outputText value="Valor imposto:" styleClass="form_label" />
+							<h:outputText value="#{casoControl.caso.valorDistribuicaoExitoImposto}" styleClass="form_label" >
+									<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>	
+							
+							<h:outputText value="Porcentagem fundo:" styleClass="form_label" />
+							<rich:inplaceInput value="#{casoControl.porcentagemDistribuicaoExitoFundo}" styleClass="form_label" >
+								<a4j:ajax event="blur" execute="@this" listener="#{casoControl.atualizarValoresDistribuicaoExito()}" render="teste"/>
+									<f:converter converterId="converter.MoedaConverter"/>
+							</rich:inplaceInput>	
+							<h:outputText value="Valor fundo:" styleClass="form_label" />
+							<h:outputText value="#{casoControl.caso.valorDistribuicaoExitoFundo}" styleClass="form_label" >
+									<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>	
+							
+							<h:outputText value="Porcentagem indicação:" styleClass="form_label" />
+							<rich:inplaceInput value="#{casoControl.porcentagemDistribuicaoExitoIndicacao}" styleClass="form_label" >
+								<a4j:ajax event="blur" execute="@this" listener="#{casoControl.atualizarValoresDistribuicaoExito()}" render="teste"/>
+									<f:converter converterId="converter.MoedaConverter"/>
+							</rich:inplaceInput>	
+							<h:outputText value="Valor indicação:" styleClass="form_label" />
+							<h:outputText value="#{casoControl.caso.valorDistribuicaoExitoIndicacao}" styleClass="form_label" >
+									<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>	
+							
+							<h:outputText value="Porcentagem sócio:" styleClass="form_label" />
+							<rich:inplaceInput value="#{casoControl.porcentagemDistribuicaoExitoSocio}" styleClass="form_label" >
+								<a4j:ajax event="blur" execute="@this" listener="#{casoControl.atualizarValoresDistribuicaoExito()}" render="teste"/>
+									<f:converter converterId="converter.MoedaConverter"/>
+							</rich:inplaceInput>	
+							<h:outputText value="Valor sócio:" styleClass="form_label" />
+							<h:outputText value="#{casoControl.caso.valorDistribuicaoExitoSocio}" styleClass="form_label" >
+									<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>	
+							
+							<h:outputText value="Porcentagem trabalho:" styleClass="form_label" />
+							<rich:inplaceInput value="#{casoControl.porcentagemDistribuicaoExitoTrabalho}" styleClass="form_label" >
+								<a4j:ajax event="blur" execute="@this" listener="#{casoControl.atualizarValoresDistribuicaoExito()}" render="teste"/>
+									<f:converter converterId="converter.MoedaConverter"/>
+							</rich:inplaceInput>	
+							<h:outputText value="Valor trabalho:" styleClass="form_label" />
+							<h:outputText value="#{casoControl.caso.valorDistribuicaoExitoTrabalho}" styleClass="form_label" >
+									<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>	
+						</h:panelGrid>
+					</rich:panel>
+				</rich:collapsiblePanel>
+				
+				
+				<rich:collapsiblePanel header="Distribuição" switchType="client" rendered="#{rich:isUserInRole('Administrador')}">
+				
+					<a4j:commandLink execute="@this" rendered="#{rich:isUserInRole('Administrador')}"
+									render="panelUsuarios" oncomplete="#{rich:component('panelUsuarios')}.show()">
+									<h:graphicImage library="images" name="add.png" />
+									Critério trabalho
+					</a4j:commandLink>
+					
+					<br/><br/>
+					
+					<rich:dataTable  var="dto" 
+						value="#{casoControl.listaAdvogadoVinculadoExito}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						id="indicacoes"
+						style="width:30%;">
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>Nome</rich:column>
+								<rich:column>Valor (%)</rich:column>
+								<rich:column>Remover</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+						
+						<rich:column>#{dto.usuario.nome}</rich:column>
+						<rich:column>
+							<h:inputText value="#{dto.valorExito}" > 
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>		
+						</rich:column>
+						<rich:column>
+							<a4j:commandLink action="#{casoControl.removerUsuarioExito(dto)}" execute="@this" render="indicacoes"
+								oncomplete="if (#{empty facesContext.messageList}) { #{rich:component('panelUsuarios')}.hide(); }">
+								<h:graphicImage library="images" name="delete.png" title="Adicionar Usuário" />
+							</a4j:commandLink>
+						</rich:column>
+					</rich:dataTable>
+				
+				<rich:popupPanel id="panelUsuarios" modal="true" resizeable="false" autosized="true" 
+					header="Adicionar Usuruário" domElementAttachment="form">
+					
+					<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+					</rich:messages>
+					
+					<rich:dataTable  var="dto" 
+						value="#{casoControl.listaAdvogadoNaoVinculadoExito}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable">
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>Nome</rich:column>
+								<rich:column>Adicionar</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+						
+						<rich:column>#{dto.usuario.nome}</rich:column>
+						<rich:column>
+							<a4j:commandLink action="#{casoControl.adicionarUsuarioExito(dto)}" execute="@this" render="indicacoes"
+								oncomplete="if (#{empty facesContext.messageList}) { #{rich:component('panelUsuarios')}.hide(); }">
+								<h:graphicImage library="images" name="add.png" title="Adicionar Usuário" />
+							</a4j:commandLink>
+						</rich:column>
+					</rich:dataTable>
+					<h:panelGrid styleClass="botoes">
+						<h:button value="Fechar" onclick="#{rich:component('panelUsuarios')}.hide(); return false;" />
+					</h:panelGrid>
+				</rich:popupPanel>
+				
+				</rich:collapsiblePanel>
+				
+			<br />
+				<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+					<h:commandButton action="#{casoControl.realizarDistribuicaoExito()}" value="Salvar distribuição" />
+					<h:commandButton action="#{casoControl.listarCaso()}" value="Voltar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</ui:component>

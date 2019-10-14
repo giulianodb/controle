@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Lista de participações por Advogado" />
+					</h:panelGrid>
+					
+				</h:panelGrid>
+		
+				
+				<center>
+				
+				
+				<br />
+				<h:form>
+
+					<rich:dataTable id="listaParticipacao" 
+						cellpadding="0"
+						cellspacing="0" 
+						border="0" 
+						var="item"
+						value="#{participacaoControl.listParticipacaoUsuarioDTO}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						style="width:50%"
+						>
+						
+							<!-- 		
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{participacaoControl.statusCheckBox}">
+									<a4j:ajax event="click"  listener="#{participacaoControl.selecionarListaParticipacao(event)}" render="listaParticipacao" ></a4j:ajax>
+								</h:selectBooleanCheckbox>
+							</f:facet> 
+							<h:outputText value="#{dto.nomeCliente}"></h:outputText>
+							 <h:selectBooleanCheckbox value="#{item.dtoSelecionado}" />
+						</rich:column>
+								 -->
+						<rich:column width="80%">
+							<f:facet name="header">
+								<h:outputText value="Advogado" />
+							</f:facet>
+							<h:outputText value="#{item.nomeUsuario}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="10%">
+							<f:facet name="header">
+								<h:outputText value="Valor pendente" />
+							</f:facet>
+							<h:outputText value="R$ #{item.valorPendente}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column width="10%">
+							<f:facet name="header">
+								<h:outputText value="Valor disponível" />
+							</f:facet>
+							<h:outputText value="R$ #{item.valorDisponivel}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+					
+						<!--
+						<rich:column width="10%">
+							<f:facet name="header">
+								<h:outputText value="Valor para pagar" />
+							</f:facet>
+							<h:inputText value="#{item.valorParaReceber}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>
+						</rich:column>
+						 -->
+						<rich:column style="width: 3%; text-align: center;">
+							<f:facet name="header">
+								<h:outputText value="Detalhes" />
+							</f:facet>
+							<h:commandLink action="#{participacaoControl.iniciarPesquisaDetalhesParticipacao(item.idUsuario)}" > 			
+								<h:graphicImage library="images" name="text_list_bullets.png" />
+							</h:commandLink>
+						</rich:column>
+						
+					</rich:dataTable>
+								
+								
+								
+				</h:form>
+					</center>
+				<rich:jQuery  selector=".stable tr" event="mouseover"
+					query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"
+					query="jQuery(this).removeClass('active-row')" />
+				
+				
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+
+	</ui:composition>
+
+</ui:component>

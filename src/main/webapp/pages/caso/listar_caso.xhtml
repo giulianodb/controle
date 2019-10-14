@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				<h:form>
+				
+				<h:panelGrid width="100%">
+								
+					<h:panelGrid styleClass="titulo">
+						<h:outputText styleClass="titulo" value="Lista de Casos" />
+					</h:panelGrid>
+				
+					
+					<br />
+
+					<rich:collapsiblePanel header="Pesquisa" switchType="client">
+						<table class="form_tabela">
+							<tr>
+								<td class="form_label">Nome cliente:</td>
+								<td><h:inputText id="nomeCliente" name="Nome do cliente" value="#{casoControl.caso.cliente.nome}" size="50" style="font-size: 14px; font-family: Courier new"/> </td>
+							</tr>
+							
+								
+							<tr>
+								<td class="form_label">Nome caso:</td>
+								<td><h:inputText id="nomeCaso" name="Nome do caso" value="#{casoControl.caso.nomeCaso}" size="50" style="font-size: 14px; font-family: Courier new"/> </td>
+							</tr>
+							
+							<tr>
+								<td class="form_label"><h:outputText value="Faturamento:" rendered="#{rich:isUserInRole('Administrador')}"/> </td>
+								<td>
+									<h:selectOneMenu value="#{casoControl.caso.tipoFaturaCaso}" rendered="#{rich:isUserInRole('Administrador')}">
+							 			<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{casoControl.listaTipoFaturamento}"
+										 	var="p" 
+										 	itemValue="#{p}" 
+										 	itemLabel="#{p.descricao}" ></f:selectItems>
+									</h:selectOneMenu>	
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">De:</td>
+								<td>
+										<rich:calendar id="dataInicio" value="#{casoControl.dataInicioPesquisa}" datePattern="dd/MM/yyyy" popup="true" />
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label">Até:</td>
+								<td>
+										<rich:calendar id="dataFim" datePattern="dd/MM/yyyy" popup="true" value="#{casoControl.dataFimPesquisa}"  />
+								
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="form_label"><h:outputText value="Situação caso:"  rendered="#{rich:isUserInRole('Administrador')}" /></td>
+								<td>
+									<h:selectOneMenu value="#{casoControl.caso.statusCaso}" rendered="#{rich:isUserInRole('Administrador')}">
+										<f:selectItem  itemLabel="Selecione"/>
+										<f:selectItem itemValue="#{statusCasoCriado}" itemLabel="#{statusCasoCriado.descricao}"/>
+										<f:selectItem itemValue="#{statusCasoFinalizado}" itemLabel="#{statusCasoFinalizado.descricao}"/>
+									</h:selectOneMenu>	
+								
+								</td>
+							</tr>
+								
+					
+					
+						
+						</table>
+						<hr />
+						<h:panelGrid columns="2" cellpadding="3" styleClass="botoes">
+							<h:commandButton action="#{casoControl.pesquisarCaso()}" value="Pesquisar" styleClass="btn_principal" immediate="false"/>
+							<h:commandButton action="#{casoControl.iniciarCadastrarCaso()}" value="Novo caso" styleClass="btn_principal" immediate="false"/>
+						</h:panelGrid>
+
+					</rich:collapsiblePanel>
+					
+				</h:panelGrid>
+				</h:form>
+				<br />
+				
+				<h:form>
+					
+						
+						
+					<rich:popupPanel id="panelUsuariosDes" modal="true" resizeable="false" autosized="true" 
+					header="Adicionar Usuruário" domElementAttachment="form">
+					
+					<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+					</rich:messages>
+					
+					<rich:dataTable  var="usuario" 
+						value="#{casoControl.listUsuarioTemp}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable">
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>Nome</rich:column>
+								<rich:column>Adicionar</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+						
+						<rich:column>#{usuario.nome}</rich:column>
+						<rich:column>
+							<a4j:commandLink action="#{casoControl.adicionarUsuarioIndicacaoTemp(usuario)}" execute="@this" render="listaCasos"
+								oncomplete="if (#{empty facesContext.messageList}) { #{rich:component('panelUsuariosDes')}.hide(); }">
+								<h:graphicImage library="images" name="add.png" title="Adicionar Usuário" />
+								
+							</a4j:commandLink>
+						</rich:column>
+					</rich:dataTable>
+				
+					<h:panelGrid styleClass="botoes">
+						<h:button value="Fechar" onclick="#{rich:component('panelUsuariosDes')}.hide(); return false;" />
+					</h:panelGrid>
+				</rich:popupPanel>
+					
+					<h:panelGrid styleClass="botoes">
+						<h:commandButton action="#{casoControl.alterarListaCasoTemp()}" value="Alterar casos" styleClass="btn_principal" immediate="false"/>
+					</h:panelGrid>
+					
+					<rich:dataTable id="listaCasos" 
+						cellpadding="0"
+						width="50%" 
+						cellspacing="0" 
+						border="0" 
+						var="caso"
+						value="#{casoControl.listaCaso}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						>
+						
+						
+						<rich:column style="width: 1%; text-align: center;" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{casoControl.statusCheckBox}">
+									<a4j:ajax event="click" listener="#{casoControl.selecionarListaCaso(event)}" render="listaCasos" ></a4j:ajax>
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							 <h:selectBooleanCheckbox value="#{caso.casoSelecionado}" />
+						</rich:column>
+						
+									
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Cliente" />
+							</f:facet>
+							<h:outputText value="#{caso.cliente.nome}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Nome caso" />
+							</f:facet>
+							<h:outputText value="#{caso.nomeCaso}"></h:outputText>
+						</rich:column>
+						
+						
+						
+						<rich:column width="100%" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:facet name="header">
+								<h:outputText value="Indicações" />
+							</f:facet>
+							<h:outputText value="#{caso.obterNomesIndicacoes()}"></h:outputText>
+						</rich:column>
+						<!--  
+						
+						<rich:column width="100%" rendered="#{rich:isUserInRole('Administrador')}" style="align:center">
+							<f:facet name="header">
+								<h:outputText value="Indicação" />
+							</f:facet>
+			
+										
+								<a4j:commandLink execute="@form" title="Adicionar indicação"
+									render="listaCasos" oncomplete="#{rich:component('panelUsuariosDes')}.show()">
+									<h:graphicImage library="images" name="add.png" />
+									<f:setPropertyActionListener target="#{casoControl.casoTempIndicacao}" value="#{caso.idCaso}"/>
+								</a4j:commandLink>
+						</rich:column>
+						-->
+						<!--  
+						
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Telefone Cliente" />
+							</f:facet>
+							<h:outputText value="#{caso.cliente.telefone}"></h:outputText>
+						</rich:column>
+						
+						-->
+						
+							<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Tipo Caso" />
+							</f:facet>
+							<h:outputText value="#{caso.tipoCaso.nome}"></h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%">
+							<f:facet name="header">
+								<h:outputText value="Data caso" />
+							</f:facet>
+							<h:outputText value="#{caso.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column width="30%" >
+							<f:facet name="header">
+								<h:outputText value="Situação" />
+							</f:facet>
+							<h:outputText value="#{caso.statusCaso.descricao}">
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column style="width: 10%; text-align: center;">
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+										
+								<a4j:commandLink execute="@form" title="Adicionar indicação" rendered="#{rich:isUserInRole('Administrador')}"
+									render="listaCasos" oncomplete="#{rich:component('panelUsuariosDes')}.show()">
+									<h:graphicImage library="images" name="table_row_insert.png" />
+									<f:setPropertyActionListener target="#{casoControl.casoTempIndicacao}" value="#{caso.idCaso}"/>
+								</a4j:commandLink>
+						
+						<h:commandLink action="#{casoControl.iniciarAlterarCaso()}">
+							<f:setPropertyActionListener target="#{casoControl.caso}" value="#{caso}"/>
+							<h:graphicImage library="images" name="pencil.png" title="Editar Caso" />
+						</h:commandLink>
+				
+						<h:commandLink action="#{casoControl.iniciarExcluirCaso()}">
+							<f:setPropertyActionListener target="#{casoControl.caso}" value="#{caso}"/>
+							<h:graphicImage library="images" name="delete.png" title="Excluir Caso" />
+						</h:commandLink>
+				
+					
+						<h:commandLink action="#{trabalhoControl.iniciarCadastrarTrabalho()}">
+							<f:setPropertyActionListener target="#{trabalhoControl.trabalho.caso}" value="#{caso}"/>
+							<h:graphicImage library="images" name="add.png" title="Inserir trabalho" />
+						</h:commandLink>
+						
+						<h:commandLink action="#{casoControl.iniciarFecharCaso()}" rendered="#{rich:isUserInRole('Administrador')}">
+							<f:setPropertyActionListener target="#{casoControl.caso}" value="#{caso}"/>
+							<h:graphicImage library="images" name="rosette.png" title="Finalizar caso" />
+						</h:commandLink>
+						
+				
+					</rich:column>
+										
+<!-- 						<f:facet name="footer"> 
+							<rich:dataScroller for="listaCasos" maxPages="5"
+								fastControls="hide" />
+							</f:facet>
+							-->
+					</rich:dataTable>
+					
+					
+				</h:form>
+				<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"  query="jQuery(this).removeClass('active-row')" />
+
+			<!--		</h:panelGrid>		-->
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+
+	</ui:composition>
+
+</ui:component>

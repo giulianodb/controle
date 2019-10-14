@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/pages/templates/layout_principal.xhtml">
+		<ui:define name="body" width="100%">
+				
+		
+				
+				<center>
+						Cliente: #{participacaoControl.participacaoFaturaDTO.fatura.cliente.nome}
+				<br />
+				Mês referência fatura: #{participacaoControl.participacaoFaturaDTO.fatura.mesReferencia}
+				
+				<br />
+				Valor total Fatura: #{participacaoControl.participacaoFaturaDTO.fatura.valorTotalFatura()}
+				
+				<br />
+				
+				
+				<br />
+				<h:form>
+
+					<rich:dataTable id="listaParticipacao" 
+						cellpadding="0"
+						cellspacing="0" 
+						border="0" 
+						var="item"
+						value="#{participacaoControl.participacaoFaturaDTO.listItem}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable"
+						keepSaved="true"
+						style="width:50%"
+						>
+								
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Advogado" />
+							</f:facet>
+							<h:outputText value="#{item.nome}"></h:outputText>
+						</rich:column>
+						<rich:column width="100%">
+							<f:facet name="header">
+								<h:outputText value="Valor" />
+							</f:facet>
+							<h:outputText value="R$ #{item.valor}">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:outputText>
+						</rich:column>
+						
+						
+						<rich:column style="width: 3%; text-align: center;">
+						<f:facet name="header">
+							<h:outputText value="Detalhes" />
+						</f:facet>
+								<a4j:commandLink execute="#{participacaoControl.detalharParticipacaoPorFatura(item)}" rendered="#{rich:isUserInRole('Administrador')}"
+									render="panelParticipacao" oncomplete="#{rich:component('panelParticipacao')}.show()">
+									<h:graphicImage library="images" name="text_list_bullets.png" />
+									
+								</a4j:commandLink>
+							
+							
+					</rich:column>
+						
+					</rich:dataTable>
+								
+				</h:form>
+					</center>
+				<rich:jQuery  selector=".stable tr" event="mouseover"
+					query="jQuery(this).addClass('active-row')" />
+				<rich:jQuery selector=".stable tr" event="mouseout"
+					query="jQuery(this).removeClass('active-row')" />
+				
+				
+				<rich:popupPanel id="panelParticipacao" modal="true" resizeable="false" autosized="true" 
+					header="Detalhes Participacao" domElementAttachment="form">
+					
+					<rich:messages globalOnly="true" showSummary="true" showDetail="true">
+					</rich:messages>
+					
+					Advogado: #{participacaoControl.item.nome} <br/>
+					Mês fatura: #{participacaoControl.participacaoFaturaDTO.fatura.mesReferencia}<br/>
+					Valor total participação: #{participacaoControl.item.valor}
+					<rich:dataTable  var="p" 
+						value="#{participacaoControl.listParticipacao}"
+						rowClasses="odd-row, even-row" 
+						styleClass="stable">
+						
+						<f:facet name="header">
+							<rich:columnGroup>
+                				<rich:column colspan="6">
+				                    <h:outputText value="Percentuais referente ao trabalho" />
+				                </rich:column>
+				                <rich:column colspan="4">
+				                    <h:outputText value="Percentuais referente ao advogado" />
+				                </rich:column>
+				                
+				                <rich:column breakRowBefore="true">% sócio</rich:column>
+								<rich:column>% Trabalho</rich:column>
+								<rich:column>% Indicação</rich:column>
+								<rich:column>% Imposto</rich:column>
+								<rich:column>% Fundo</rich:column>
+								<rich:column>Valor total trabalho</rich:column>
+								<rich:column>% Sócio</rich:column>
+								<rich:column>% Trabalho</rich:column>
+								<rich:column>% Indicação</rich:column>
+								<rich:column>Valor Total</rich:column>
+				    
+				            </rich:columnGroup>
+											
+						</f:facet>
+						
+						<rich:column> 
+							<h:inputText value="#{p.trabalho.porcentagemParticipacaoSocio}" size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>
+						
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.trabalho.porcentagemParticipacaoTrabalho}" size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>	
+						</rich:column>
+						<rich:column>
+							<h:inputText value= "#{p.trabalho.porcentagemIndicacao} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>	
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.trabalho.porcentagemImposto} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>	
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.trabalho.porcentagemFundo} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>	
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.trabalho.valorTotalTrabalho} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>	
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.porcentagemParticipacaoSocio} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.porcentagemParticipacaoTrabalho} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>	
+						</rich:column>
+						<rich:column>
+							<h:inputText value="#{p.porcentagemIndicacao} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>
+						</rich:column>
+						<rich:column> 
+							<h:inputText value="#{p.valorTotalParticipacao} " size="5">
+								<f:converter converterId="converter.MoedaConverter"/>
+							</h:inputText>
+						</rich:column>
+				
+					</rich:dataTable>
+					<h:panelGrid styleClass="botoes">
+						<h:button value="Fechar" onclick="#{rich:component('panelParticipacao')}.hide(); return false;" />
+					</h:panelGrid>
+				</rich:popupPanel>
+				
+				
+
+		</ui:define>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+
+	</ui:composition>
+
+</ui:component>
