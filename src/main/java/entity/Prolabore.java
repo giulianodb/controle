@@ -98,6 +98,9 @@ public class Prolabore implements Serializable {
 	@LazyCollection(LazyCollectionOption.TRUE) //para funcionar eager num mtm
 	private Set<PreParticipacaoFixo> listaPreParticipacaoFixos;
 	
+	@Transient
+	private Boolean selecionado;
+	
 	public Date getDataVencimento() {
 		return dataVencimento;
 	}
@@ -356,6 +359,14 @@ public class Prolabore implements Serializable {
 
 	public void setValorParticipacaoTrabalho(Float valorParticipacaoTrabalho) {
 		this.valorParticipacaoTrabalho = valorParticipacaoTrabalho;
+	}
+
+	public Boolean getSelecionado() {
+		return selecionado;
+	}
+
+	public void setSelecionado(Boolean selecionado) {
+		this.selecionado = selecionado;
 	}
 	
 	

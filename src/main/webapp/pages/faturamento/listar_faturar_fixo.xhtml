@@ -51,6 +51,7 @@
 						<hr />
 						<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
 							<h:commandButton action="#{faturaFixoControl.pesquisarEmissaoFaturaFixo()}" value="Pesquisar" styleClass="btn_principal" immediate="false"/>
+							
 						</h:panelGrid>
 </h:form>
 					</rich:collapsiblePanel>
@@ -60,6 +61,12 @@
 			<h:outputText value="Não foram encontrados registros." rendered="#{!faturaFixoControl.mostrarListaFaturamentoFixo()}"  />
 								
 			<h:form>
+			
+					<h:panelGrid columns="3" cellpadding="3" styleClass="botoes">
+ 				<h:commandButton action="#{faturaFixoControl.gerarFaturaFixoSelecionados()}" value="Gerar faturas selecionadas" styleClass="btn_principal" immediate="false"/>			
+						</h:panelGrid>
+			
+			
 					<rich:dataTable id="listaProlabore" 
 						cellpadding="0"
 						width="50%" 
@@ -72,6 +79,15 @@
 						keepSaved="true"
 						rendered="#{faturaFixoControl.mostrarListaFaturamentoFixo()}"
 						>
+						
+						<rich:column style="width: 1%; text-align: center;">
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{faturaFixoControl.statusCheckBox}">
+									<a4j:ajax event="click" listener="#{faturaFixoControl.selecionarListaProlabore(event)}" render="listaProlabore" ></a4j:ajax>
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							 <h:selectBooleanCheckbox value="#{p.selecionado}" />
+						</rich:column>
 						
 						<rich:column width="30%">
 							<f:facet name="header">
@@ -144,7 +160,7 @@
                 		</a4j:commandLink>
 						
 						
-						<h:commandLink action="#{faturaFixoControl.gerarFaturaFixo()}" rendered="#{empty p.evento}">
+						<h:commandLink action="#{faturaFixoControl.gerarFaturaFixo(true)}" rendered="#{empty p.evento}">
 							<f:setPropertyActionListener target="#{faturaFixoControl.prolaboreGerarFatura}" value="#{p}"/>
 							<h:graphicImage library="images" name="icone_pdf.gif" title="Gerar fatura" />
 						</h:commandLink>
@@ -173,7 +189,7 @@
             			<rich:calendar id="dataInicio"  datePattern="dd/MM/yyyy" popup="true" value="#{faturaFixoControl.dataVencimentoEvento}"/>
             			<br />
             			<a4j:commandButton value="Cancelar" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
-            			<h:commandButton value="Gerar fatura" action="#{faturaFixoControl.gerarFaturaFixo()}" />
+            			<h:commandButton value="Gerar fatura" action="#{faturaFixoControl.gerarFaturaFixo(true)}" />
         			</rich:popupPanel>
 					
 					

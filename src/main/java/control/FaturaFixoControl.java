@@ -12,6 +12,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
@@ -334,7 +335,7 @@ public class FaturaFixoControl implements Serializable {
 		p.getListaPreParticipacaoFixos().removeAll(listRemover);
 	}
 	
-	public String gerarFaturaFixo(){
+	public String gerarFaturaFixo(Boolean gerarPdf){
 		
 		try {
 			if (dataVencimentoEvento != null){
@@ -342,12 +343,15 @@ public class FaturaFixoControl implements Serializable {
 			}
 			removerPreParticipacoes(prolaboreGerarFatura);
 			Fatura fatura = faturaService.gerarFaturaFixo(prolaboreGerarFatura);
-			this.gerarRelatorioFaturaFixo(fatura, true);
+			if (gerarPdf) {
+				this.gerarRelatorioFaturaFixo(fatura, true);
+			}
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso ao gerar fatura.", ""));// TODO: handle exception
 			dataVencimentoEvento = null;
 		} 
 		catch (ControleException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		catch (Exception e) {
@@ -358,6 +362,24 @@ public class FaturaFixoControl implements Serializable {
 		return pesquisarEmissaoFaturaFixo();
 		
 	}
+	
+	
+	public String gerarFaturaFixoSelecionados(){
+		
+//		<f:setPropertyActionListener target="#{faturaFixoControl.prolaboreGerarFatura}" value="#{p}"/>
+		
+		for (Prolabore prolabore : listProlabore) {
+			if (prolabore.getSelecionado()) {
+				this.prolaboreGerarFatura = prolabore;
+				this.gerarFaturaFixo(false);
+			}
+		}
+		
+		
+		return pesquisarEmissaoFaturaFixo();
+	}
+	
+	
 	
 	
 	public String gerarFaturaVisualizacaoFixo(){
@@ -553,7 +575,14 @@ public class FaturaFixoControl implements Serializable {
 	}
 
 
-	
+	public void selecionarListaProlabore(ActionEvent actionEvent) {
+
+		for (Prolabore p : listProlabore) {
+			p.setSelecionado(statusCheckBox);
+		}
+
+	}
+
 
 	
 }
