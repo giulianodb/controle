@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -379,6 +380,45 @@ public class Fatura implements Serializable{
 		else {
 			return "Caso variável";
 		}
+	}
+	
+	public String nomesDosCasos() {
+		StringBuilder casos = new StringBuilder();
+		List<String> listaCasos = new ArrayList<String>();
+		
+		
+		if (this.listaTrabalhos != null && this.listaTrabalhos.size() > 0) {
+			for (Trabalho trabalho : listaTrabalhos) {
+				if (trabalho.getCaso() != null) {
+					
+					if (!listaCasos.contains(trabalho.getCaso().getNomeCaso())) {
+						listaCasos.add(trabalho.getCaso().getNomeCaso());
+					}
+					
+			
+				}
+			}
+			
+		} else {
+			return "";
+		}
+		
+		for (int i = 0; i < listaCasos.size(); i++) {
+			casos.append(listaCasos.get(i));
+				casos.append(" - ");
+		}
+		
+		
+//		try {
+//			String teste = casos.toString().substring(0, casos.toString().length()-3);
+//			
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			casos.toString().substring(0, casos.toString().length()-3);
+//		}
+		
+		return casos.toString().substring(0, casos.toString().length()-3);
+		
 	}
 
 	

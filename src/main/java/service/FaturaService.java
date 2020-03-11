@@ -1192,7 +1192,18 @@ public class FaturaService {
 			query.setParameter("statusFatura", fatura.getStatusFatura());
 		}
 		
-		return query.getResultList();
+		 List<Fatura> faturas = query.getResultList();
+		
+		 for (Fatura fatura2 : faturas) {
+			 List<Trabalho> tblos = fatura2.getListaTrabalhos();
+			 for (Trabalho t : tblos) {
+				t.getCaso().getNomeCaso();
+				t.getCaso().getData();
+			}
+			}
+		 
+		 
+		return faturas;
 	}
 	
 	

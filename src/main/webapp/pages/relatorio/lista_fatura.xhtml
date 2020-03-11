@@ -117,6 +117,14 @@
 							<h:outputText value="#{fatura.cliente.nome}"></h:outputText>
 						</rich:column>
 						
+						<rich:column width="5%">
+							<f:facet name="header">
+								<h:outputText value="Casos" />
+							</f:facet>
+							<h:outputText value="#{fatura.nomesDosCasos()}"></h:outputText>
+						</rich:column>
+						
+						
 						<rich:column width="30%">
 							<f:facet name="header">
 								<h:outputText value="Data fatura" />

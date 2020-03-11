@@ -199,4 +199,9 @@ public class Trabalho implements Serializable{
 		this.usuarios = usuarios;
 	}
 
+	@Override
+	public String toString() {
+		return "Trabalho [idTrabalho=" + idTrabalho + "]";
+	}
+
 }
