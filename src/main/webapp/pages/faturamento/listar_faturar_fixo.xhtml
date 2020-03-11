@@ -82,8 +82,8 @@
 						
 						<rich:column style="width: 1%; text-align: center;">
 							<f:facet name="header">
-								<h:selectBooleanCheckbox value="#{faturaFixoControl.statusCheckBox}">
-									<a4j:ajax event="click" listener="#{faturaFixoControl.selecionarListaProlabore(event)}" render="listaProlabore" ></a4j:ajax>
+								<h:selectBooleanCheckbox value="#{faturaFixoControl.statusCheckBox}" disabled="true">
+									<a4j:ajax event="click" listener="#{faturaFixoControl.selecionarListaProlabore(event)}" render="listaProlabore"></a4j:ajax>
 								</h:selectBooleanCheckbox>
 							</f:facet>
 							 <h:selectBooleanCheckbox value="#{p.selecionado}" />
