@@ -1,0 +1,9 @@
+Cron SUDO
+58 23 * * *   /opt/base/bkp.sh
+59 23 * * *   /opt/base/copia.sh
+
+@reboot /opt/jboss/inicia.sh
+
+
+CRON user normal
+#0,05 * * * * . /opt/base/bkp.sh
